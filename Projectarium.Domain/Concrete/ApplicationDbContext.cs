@@ -13,8 +13,8 @@ namespace Projectarium.Domain.Concrete
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-      
-            Database.EnsureCreated();
+         
+            //Database.EnsureCreated();
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Link> Links { get; set; }
@@ -46,7 +46,7 @@ namespace Projectarium.Domain.Concrete
                 .HasOne(sc => sc.UserProfile)
                 .WithMany(c => c.SkillUsers)
                 .HasForeignKey(sc => sc.UserId);
-            base.OnModelCreating(modelBuilder);
+          
 
             //Многие-ко-многим объеденяющее умения и вакансии
             modelBuilder.Entity<SkillVacancy>()
@@ -64,6 +64,11 @@ namespace Projectarium.Domain.Concrete
 
 
             base.OnModelCreating(modelBuilder);
+     
+          
+
+
+         
         } 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -50,7 +50,17 @@ namespace Projectarium.WebUI
             //.AddDefaultTokenProviders(); 
             services.AddControllersWithViews();
             services.AddRazorPages();
-       
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin",
+                    policyBuilder => policyBuilder.RequireAssertion(
+                        context => !context.User.Claims.Any(c => c.Type == "AdminId")
+                    ));
+                options.AddPolicy("User",
+                  policyBuilder => policyBuilder.RequireAssertion(
+                      context => !context.User.Claims.Any(c => c.Type == "UserId")
+                  ));
+            });
 
         }
 

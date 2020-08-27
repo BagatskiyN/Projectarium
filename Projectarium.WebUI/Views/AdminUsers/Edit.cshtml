@@ -1,0 +1,105 @@
+﻿@model Projectarium.WebUI.Models.AdminUsersVM.EditUserVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>UserProfile</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="AboutUser" class="control-label"></label>
+                <input asp-for="AboutUser" class="form-control" />
+                <span asp-validation-for="AboutUser" class="text-danger"></span>
+            </div>
+        
+            <div id="Skills">
+
+                @if (Model.Skills.Count != 0)
+                {
+                    @await Html.PartialAsync("~/Views/Shared/AdminUsersPartialViews/SkillsList.cshtml", Model.Skills);
+                }
+                else
+                {
+                    <p>Нет данных о способностях</p>
+                }
+            </div>
+
+
+
+            <input type="text" id="SkillText" />
+            <div class="form-group">
+                <a onclick="AddSkill(@Model.Id)" class="btn btn-primary">Добавить умение</a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Projects[0].Id)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Projects[0].Title)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Projects != null)
+                    {@foreach (var item in Model.Projects)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td>
+                                    <a asp-action="AboutProject" asp-route-id="@item.Id">Подробнее</a>
+                                </td>
+                            </tr>
+                        }}
+                </tbody>
+            </table>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/DeleteSkill.js" type="text/javascript" charset="utf-8"></script>
+}
+<script type="text/javascript">
+
+    function AddSkill(id) {
+        let text = document.getElementById("SkillText");
+        const url = '/AdminUsers/AddSkill';
+        let item = { text: text.value, id: id }
+        $.ajax(url, {
+            method: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(item),
+            traditional: true,
+
+            success: function (data) {
+                $("#Skills").replaceWith(data);
+            }
+        });
+    }
+
+</script>

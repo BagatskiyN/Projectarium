@@ -10,14 +10,18 @@ namespace Projectarium.Domain.Entities
         public string Title { get; set; }
         public int Likes { get; set; }
         public string AboutProject { get; set; }
-        public List<Skill> Skills { get; set; }
+     
         public List<Vacancy> Vacancies { get; set; }
         public List<Link> Links { get; set; }
+        public List<Request> Requests { get; set; }
+        public int UserProfileId { get; set; }
+        public UserProfile UserProfile { get; set; }
         public Project()
         {
-            Skills = new List<Skill>();
+          
             Vacancies = new List<Vacancy>();
             Links = new List<Link>();
+            Requests = new List<Request>();
         }
 
     }
