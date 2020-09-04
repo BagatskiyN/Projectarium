@@ -1,0 +1,63 @@
+﻿@model Projectarium.Domain.Entities.Project
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<link rel="stylesheet" href="~/css/ProjectManager.css" />
+
+<hr />
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <p class="BlockTitle">Название проекта:</p>
+    <input asp-for="Title" class="InputTitleStyle" />
+    <span asp-validation-for="Title" class="text-danger"></span>
+
+
+
+    <p class="BlockTitle">Описание проекта:</p>
+    <textarea asp-for="AboutProject" class="TextAreaAboutProject"></textarea>
+    <span asp-validation-for="AboutProject" class="text-danger"></span>
+
+    <div class="VacancyTitleContainer">
+        <div class="NewItemButton BigButtonNewItem "></div>
+        <div class="BlockTitle VacancyTitle">Вакансии:</div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+<div class="VacancyTitleContainer  ">
+    <input type="text" id="TechTitle" class="NewVacancyInput" /><div class="AddItemButton" onclick="NewVac()">Добавить</div>
+</div>
+<div id="Vac">
+    <p>wefwef</p>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/ProjectManager.js" type="text/javascript" charset="utf-8"></script>
+}
+@*<script >
+    function NewVac() {
+        const url = '/ProjectManager/AddVacancy';
+        title = document.getElementById('TechTitle').value;
+        $.ajax(url, {
+            method: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(title),
+            traditional: true,
+
+            success: function (data) {
+                $("#Vac").replaceWith(data);
+            }
+        });
+
+    }
+</script>*@
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

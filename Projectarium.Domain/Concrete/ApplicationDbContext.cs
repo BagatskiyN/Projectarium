@@ -13,7 +13,7 @@ namespace Projectarium.Domain.Concrete
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-         
+
             //Database.EnsureCreated();
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }

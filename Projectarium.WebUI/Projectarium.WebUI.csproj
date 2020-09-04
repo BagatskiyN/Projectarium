@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Projectarium.Domain\Projectarium.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\ProjectManagerVM\" />
+  </ItemGroup>
+
 </Project>

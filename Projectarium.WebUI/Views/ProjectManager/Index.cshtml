@@ -1,0 +1,94 @@
+﻿@model List<Projectarium.Domain.Entities.Project>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    <link rel="stylesheet" href="~/css/ProjectManager.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+}
+
+
+
+@if (Model != null)
+{
+    if (Model.Count != 0)
+    {<p class="Title">Мои проекты</p>
+        <div class="ButtonContainer">
+            <button class="CreateButtonSmall" id="CreateButton">
+                <a  class="CreateButtonText">Создать проект</a>
+            </button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Likes)
+                    </th>
+
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Likes)
+                        </td>
+
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Просмотр</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Заявки</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+
+        <button  id="CreateButton" class="CreateProjectButtonBig">
+            <a @*asp-action="Create"*@  class="CreateProjectButtonText">Создать проект</a>
+        </button>
+
+    }
+}
+else
+{
+
+    <div  id="CreateButton" class="CreateProjectButton">
+        <a @*asp-action="Create"*@ class="CreateProjectButtonText">Создать проект</a>
+    </div>
+
+}  
+<div class="modal fade" id="CreateModal" role="dialog" data-url='@Url.Action("CreatePartial","ProjectManager")'></div>
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            $('#CreateButton').click(function () {
+
+                var url = $('#CreateModal').data('url');
+                $.get(url, function (data) {
+                    $("#CreateModal").html(data);
+                    $("#CreateModal").modal('show');
+
+                })
+
+            });
+
+        });
+
+
+</script>

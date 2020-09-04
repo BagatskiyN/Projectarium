@@ -1,0 +1,118 @@
+﻿.VacancyBlockTitle {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+}
+
+.VacancyTitle {
+    margin-top: 0px;
+    margin-left: 20px;
+}
+
+.VacancyContainer {
+    border: 1px solid;
+    height: 350px;
+    width: 350px;
+    padding: 10px;
+    margin-top:20px;
+    margin-bottom:10px;
+}
+.CreateProjectModalContainer {
+    width: 100% ;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.CreateProjectModal {
+    height: 200px;
+    width: 500px;
+    border: 1px solid;
+
+   margin-top:30vh;
+   background-color:white;
+}
+.modalContentStyle{
+    background-color:white;
+    border:none;
+}
+.ProjectTitleInput
+{
+    width:90%;
+    height:30px;
+    font-size:24px;
+
+}
+.VacancyTitleContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.SecondaryTitle {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.NewTechInputContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.SecondaryTitleInput {
+    height: 24px;
+    width: 300px;
+    font-size: 18px;
+    border: 1px solid;
+    text-align: center;
+}
+
+.SmallButtonNewItem {
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+}
+
+.BigButtonNewItem {
+    height: 30px;
+    width: 30px;
+}
+
+.NewItemButton {
+    border: 1px solid;
+    background-image: url(../Content/icons/PlusButton.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+}
+
+.NewTechInput {
+    border: 1px solid;
+    width: 200px;
+    height: 30px;
+    font-size: 18px;
+}
+
+.AddItemButton {
+    border: 1px solid;
+    font-style: normal;
+    font-weight: 300;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    width: 100px;
+    height: 30px;
+    margin-left: 20px;
+}
+.NewVacancyInput {
+    border: 1px solid;
+    width: 200px;
+    height: 30px;
+    font-size: 22px;
+}
