@@ -1,0 +1,11 @@
+﻿@model Projectarium.Domain.Entities.Link
+<div>
+    <div class="LinkContainer">
+        <div class="Link">
+            <a href="@Model.LinkText" class="LinkText">@Model.Mask</a>
+        </div><button onclick="DeleteLink(this,@Model.Id)" class="DeleteLinkButtonContainer">
+            <div class="DeleteLinkButton">
+            </div>
+        </button>
+    </div>
+</div>

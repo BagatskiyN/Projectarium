@@ -12,10 +12,10 @@ namespace Projectarium.Domain.Entities
         public string Awards { get; set; }
         public int ProjectId { get; set; }
         public Project Project { get; set; }
-        public List<SkillVacancy> SkillVacancies { get; set; }
+        public List<Skill> Skills { get; set; }
         public Vacancy()
         {
-            SkillVacancies = new List<SkillVacancy>();
+            Skills = new List<Skill>();
             
         }
     }

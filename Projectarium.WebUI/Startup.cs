@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Projectarium.Domain.Concrete;
 using Projectarium.Domain.Entities;
+using Newtonsoft.Json;
+using Projectarium.WebUI.Services;
 
 namespace Projectarium.WebUI
 {
@@ -46,7 +48,9 @@ namespace Projectarium.WebUI
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddRoles<ApplicationRole>()
             .AddDefaultUI()
-            .AddDefaultTokenProviders(); 
+            .AddDefaultTokenProviders();
+            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+            services.AddTransient<ILinkMasker, LinkMaskerService>();
             //.AddDefaultTokenProviders(); 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -60,7 +64,11 @@ namespace Projectarium.WebUI
                   policyBuilder => policyBuilder.RequireAssertion(
                       context => !context.User.Claims.Any(c => c.Type == "UserId")
                   ));
-            });
+            }); 
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllersWithViews().AddNewtonsoftJson();
+            services.AddRazorPages().AddNewtonsoftJson();
+
 
         }
 

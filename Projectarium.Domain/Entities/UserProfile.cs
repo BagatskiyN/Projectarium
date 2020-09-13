@@ -16,10 +16,10 @@ namespace Projectarium.Domain.Entities
         public List<Link> Links { get; set; }
         public List<Project> Projects { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
-        public List<SkillUser> SkillUsers { get; set; }
+        public List<Skill> Skills { get; set; }
         public UserProfile()
         {
-            SkillUsers = new List<SkillUser>();
+            Skills = new List<Skill>();
             Links = new List<Link>();
             Projects = new List<Project>();
         }

@@ -1,0 +1,4 @@
+﻿@model Projectarium.Domain.Entities.Skill
+    <div id="@("Skill"+Model.Id)">
+        <div class="SkillContainer"> <button onclick="DeleteSkill(@Model.Id)" class="DeleteSkillButton"></button>@Model.Title </div>
+    </div>

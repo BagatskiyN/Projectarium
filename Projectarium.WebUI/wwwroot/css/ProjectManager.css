@@ -8,6 +8,13 @@
     margin-top: 0px;
     margin-left: 20px;
 }
+.VacanciesContainer{
+   display:flex;
+  margin:0 auto;
+   flex-flow:row wrap;
+   margin-left:30px;
+
+}
 
 .VacancyContainer {
     border: 1px solid;
@@ -16,8 +23,16 @@
     padding: 10px;
     margin-top:20px;
     margin-bottom:10px;
+    overflow:scroll;
+    margin-left:10px;
+    margin-right:10px;
+    position:relative;
 }
-.CreateProjectModalContainer {
+    .VacancyContainer::-webkit-scrollbar {
+        width: 0px;
+        background: rgba(255, 255, 255, 0.0);
+    }
+    .CreateProjectModalContainer {
     width: 100% ;
     display: flex;
     flex-direction: column;
@@ -49,7 +64,10 @@
     margin-top: 30px;
     width: 100%;
 }
-
+.VacancyMainTitleContainer
+{
+    width:80%;
+}
 .SecondaryTitle {
     font-style: normal;
     font-weight: 600;
@@ -91,7 +109,28 @@
     background-size: cover;
     background-color: transparent;
 }
+.DeleteSkillButton {
+    height:20px;
+    width:20px;
+    margin-right:10px;
+    border: 1px solid;
+    background-image: url(../Content/icons/Delete.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+}
+.SkillsContainer{
+    width:100%;
+    margin-top:10px;
+}
 
+.SkillContainer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    width: 100%;
+}
 .NewTechInput {
     border: 1px solid;
     width: 200px;
@@ -115,4 +154,68 @@
     width: 200px;
     height: 30px;
     font-size: 22px;
+}
+.AboutVacancyTextArea {
+    width: 300px;
+    height: 100px;
+    border: 1px solid;
+    font-style: normal;
+    font-weight: 300;
+
+    margin-top:20px;
+}
+.DeleteVacancyContainer {
+   display:flex;
+   flex-direction:row;
+   justify-content:flex-end;
+  width:100%;
+}
+.Link {
+    border: 1px solid;
+    padding:5px;
+    height: 30px;
+    font-size: 18px;
+    align-content:center;
+
+}
+.LinkContainer {
+    display: flex;
+    align-content: center;
+    margin-bottom:10px;
+}
+.LinksContainer
+{
+    width:80%;
+    display:flex;
+ margin-bottom:50px;
+   
+    margin-top:30px;
+
+}
+.LinkText
+{
+    color:black;
+}
+
+.DeleteLinkButtonContainer {
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+    border: 1px solid;
+    border-left: 0px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    background-color:white;
+    align-content:center;
+}
+.DeleteLinkButton {
+    height: 20px;
+    width: 20px;
+    background-image: url(../Content/icons/Delete.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+
 }

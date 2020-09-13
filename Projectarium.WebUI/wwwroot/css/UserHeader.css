@@ -41,7 +41,7 @@ body
 }
 .MainContainer {
     width: 85%;
-    height: 100vh;
+   padding:15px;
     border-left: 1px solid;
     border-right: 1px solid;
     align-content: center;
@@ -107,8 +107,8 @@ body
     font-weight: 300;
     font-size: 20px;
     border: 1px solid;
-    width:500px;
-    height:300px;
+    width:800px;
+    height:400px;
 }
 .ButtonContainer
 {

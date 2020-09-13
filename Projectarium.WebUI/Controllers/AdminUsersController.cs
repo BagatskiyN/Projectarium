@@ -134,12 +134,10 @@ namespace Projectarium.WebUI.Controllers
                 ImageData=userProfile.ImageData,
                 ImageType=userProfile.ImageMimeType
             };
-            Skills =_context.UserProfiles
-                .Include(c => c.SkillUsers)
-                .ThenInclude(sc => sc.Skill)
-                .FirstOrDefault()
-                .SkillUsers
-                .Select(s=>s.Skill)
+            Skills = _context.UserProfiles
+                .Include(u => u.Skills)
+                .FirstOrDefault(x => x.Id ==id)
+                .Skills
                 .ToList();
             editUserVM.Skills = Skills;
             if (applicationUser== null)
@@ -171,17 +169,14 @@ namespace Projectarium.WebUI.Controllers
 
                     UserProfile userProfile = await _context.UserProfiles.FindAsync(id);
                     userProfile.AboutUser = editUserVM.AboutUser;
-                   List<Skill> DeletedSkills =_context.UserProfiles
-                                                      .Include(c => c.SkillUsers)
-                                                      .ThenInclude(sc => sc.Skill)
-                                                      .FirstOrDefault()
-                                                      .SkillUsers
-                                                      .Select(s => s.Skill)
-                                                      .ToList();
-                                     
+                   List<Skill>  FormerSkillsList =_context.UserProfiles
+                        .Include(u => u.Skills)
+                        .FirstOrDefault(x => x.Id == id)
+                        .Skills
+                       .ToList();
+                    List<Skill> DeletedSkills = FormerSkillsList.Except(Skills).ToList();
 
-            
-                   foreach(var skill in DeletedSkills)
+                    foreach (var skill in DeletedSkills)
                     {
                        _context.Skills.Remove(skill);
                     }
@@ -190,19 +185,11 @@ namespace Projectarium.WebUI.Controllers
                         Skill skill = new Skill()
                         {
                             Title = item.text,
-                          
+                          UserProfile=userProfile
                         };
                         await _context.Skills.AddAsync(skill);
                         await _context.SaveChangesAsync();
-                        Skill skillAdded = _context.Skills.Where(x => x.Title == item.text).FirstOrDefault();
-                        SkillUser skillUser = new SkillUser() 
-                        {
-                            SkillId=skill.Id,
-                            UserId=id
-                        };
-                        skillAdded.SkillUsers.Add(skillUser); 
-                        _context.Skills.Update(skillAdded);
-                        await _context.SaveChangesAsync();
+                   
                     }
                 
                     //foreach (var item in NewSkills)

@@ -1,16 +1,32 @@
 ﻿@model Projectarium.Domain.Entities.Vacancy
-<div id="Vac">
+
+       
     <div class="VacancyContainer FlexColumn">
-            <div class="SecondaryTitle">@Model.Title</div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="DeleteVacancyContainer"> <button onclick="DeleteVacancy(this,@Model.Id)" class="DeleteSkillButton"></button></div>
+        <div class="SecondaryTitle">@Model.Title</div>
 
-            <div class="VacancyTitleContainer">
-                <div class="NewItemButton SmallButtonNewItem"></div>
-                <div class="SecondaryTitle">Технологии:</div>
-            </div>
-            <div class="NewTechInputContainer ">
-                <input type="text" id="TechTitle" class="NewTechInput" /><button class="AddItemButton">Добавить</button>
-            </div>
+        <div class="VacancyTitleContainer">
+            <div class="NewItemButton SmallButtonNewItem"></div>
+            <div class="SecondaryTitle">Технологии:</div>
         </div>
+        <div class="NewTechInputContainer ">
+            <input type="text" id="TechTitle" class="NewTechInput" /><button onclick="AddSkill(this,@Model.Id)" id="BtnAddVacancy" class="AddItemButton">Добавить</button>
+        </div>
+        <div id="@("Skills" + Model.Id)" class="SkillsContainer">
+            @foreach (var skill in Model.Skills)
+            {
+                @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/SkillViewEdit.cshtml", skill);
+
+            }
+
+        </div>
+        <div class="VacancyTitleContainer">
+            <div class="SecondaryTitle">Что мы предлагаем:</div>
+        </div>
+        <div> <textarea class="AboutVacancyTextArea">@Model.Awards</textarea></div>
+        <button onclick="SaveVacancyDescription(this,@Model.Id)">Сохранить описание</button>
 
 
-</div>
+    </div>

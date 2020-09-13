@@ -9,12 +9,12 @@ namespace Projectarium.Domain.Concrete
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
-        private readonly string _conStr = "Data Source =.\\SQLEXPRESS;Initial Catalog = ProjectariumDb; Integrated Security = True";
+        private readonly string _conStr = "Data Source =(localdb)\\MSSQLLocalDB;Initial Catalog = ProjectariumDb; Integrated Security = True";
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
 
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Link> Links { get; set; }
@@ -31,37 +31,17 @@ namespace Projectarium.Domain.Concrete
        .HasOne(u => u.UserProfile)
        .WithOne(p => p.ApplicationUser)
        .HasForeignKey<UserProfile>(p => p.Id)
-       .HasPrincipalKey<ApplicationUser>(c => c.Id)
-   ;
-            //Многие-ко-многим объеденяющее умения и пользователей 
-            modelBuilder.Entity<SkillUser>()
-         .HasKey(t => new { t.SkillId, t.UserId });
+       .HasPrincipalKey<ApplicationUser>(c => c.Id);
 
-            modelBuilder.Entity<SkillUser>()
-           .HasOne(sc => sc.Skill)
-           .WithMany(s => s.SkillUsers)
-           .HasForeignKey(sc => sc.SkillId);
+            modelBuilder.Entity<Skill>()
+             .HasOne(a => a.Vacancy)
+             .WithMany(a => a.Skills)
+             .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<SkillUser>()
-                .HasOne(sc => sc.UserProfile)
-                .WithMany(c => c.SkillUsers)
-                .HasForeignKey(sc => sc.UserId);
-          
-
-            //Многие-ко-многим объеденяющее умения и вакансии
-            modelBuilder.Entity<SkillVacancy>()
-       .HasKey(t => new { t.SkillId, t.VacancyId });
-
-            modelBuilder.Entity<SkillVacancy>()
-           .HasOne(sc => sc.Skill)
-           .WithMany(s => s.SkillVacancies)
-           .HasForeignKey(sc => sc.SkillId);
-
-            modelBuilder.Entity<SkillVacancy>()
-                .HasOne(sc => sc.Vacancy)
-                .WithMany(c => c.SkillVacancies)
-                .HasForeignKey(sc => sc.VacancyId);
-
+            modelBuilder.Entity<Skill>()
+          .HasOne(a => a.UserProfile)
+          .WithMany(a => a.Skills)
+          .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
      
