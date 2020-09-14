@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 
-<html>
+<html class="BodyContainer">
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="~/css/UserHeader.css" />
 </head>
 
-<body class="FlexColumn ">
+<body class="FlexColumn BodyContainer">
     <header class="Header">
-        <div class="HeaderBar"><div class="MenuItem">Главная</div><div class="MenuItem">Мои проекты</div></div>
+        <div class="HeaderBar"><div class="MenuItem" ><a asp-controller="Home" asp-action="Index">Главная</a></div><div class="MenuItem"><a  asp-controller="ProjectManager" asp-action="Index">Мои проекты</a></div></div>
         <div class="UserIcon"></div>
     </header>
     <div class="MainContainer FlexColumn ">

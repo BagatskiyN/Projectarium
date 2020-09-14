@@ -18,7 +18,7 @@
 
 
 <p class="BlockTitle">Описание проекта:</p>
-<textarea asp-for="AboutProject" class="TextAreaAboutProject" id="TextAreaAboutProject"></textarea>
+<div><textarea asp-for="AboutProject" class="TextAreaAboutProject" id="TextAreaAboutProject"></textarea></div>
 <span asp-validation-for="AboutProject" class="text-danger"></span>
 
 <div class="VacancyTitleContainer VacancyMainTitleContainer">
@@ -34,7 +34,7 @@
 <div id="Vac" class="VacanciesContainer">
     @foreach (var item in Model.Vacancies)
     {
-        @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/VacancyView.cshtml", item);
+        @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/EditPartialViews/EditVacancyView.cshtml", item);
     }
 </div>
 
@@ -51,7 +51,7 @@
 <div id="Links" class="LinksContainer">
     @foreach (var link in Model.Links)
     {
-        @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/LinkView.cshtml", link);
+        @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/EditPartialViews/EditLinkView.cshtml", link);
     }
 </div>
 
@@ -65,23 +65,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/ProjectManager.js" type="text/javascript" charset="utf-8"></script>
 }
-@*<script >
-        function NewVac() {
-            const url = '/ProjectManager/AddVacancy';
-            title = document.getElementById('TechTitle').value;
-            $.ajax(url, {
-                method: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify(title),
-                traditional: true,
 
-                success: function (data) {
-                    $("#Vac").replaceWith(data);
-                }
-            });
-
-        }
-    </script>*@
 <script type="text/javascript">
     $(document).ready(
         function () {
@@ -112,6 +96,6 @@
 
 </script>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">К списку проектов</a>
 </div>
 

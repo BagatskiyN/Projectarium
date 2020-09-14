@@ -12,7 +12,7 @@
    display:flex;
   margin:0 auto;
    flex-flow:row wrap;
-   margin-left:30px;
+   margin-left:70px;
 
 }
 
@@ -181,16 +181,15 @@
 .LinkContainer {
     display: flex;
     align-content: center;
-    margin-bottom:10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
 }
-.LinksContainer
-{
-    width:80%;
-    display:flex;
- margin-bottom:50px;
-   
-    margin-top:30px;
-
+.LinksContainer {
+    width: 80%;
+    display: flex;
+    margin-bottom: 50px;
+  
+    margin-top: 30px;
 }
 .LinkText
 {
@@ -200,7 +199,7 @@
 .DeleteLinkButtonContainer {
     height: 30px;
     width: 30px;
-    margin-right: 10px;
+ 
     border: 1px solid;
     border-left: 0px;
     display:flex;
@@ -218,4 +217,33 @@
     background-size: cover;
     background-color: transparent;
 
+}
+.NoElementsText {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    width: 300px;
+    text-align: center
+}
+.AboutProjectTextBlock {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    width: 50%;
+    word-wrap:break-word;
+}
+.ProjectTitleBlock {
+    font-style: normal;
+    font-weight: 500;
+    font-size:40px;
+    width: 300px;
+    text-align: center
+}
+.AboutVacancyTextBlock {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    word-wrap: break-word;
+    width: 300px;
+    margin-top:10px;
 }

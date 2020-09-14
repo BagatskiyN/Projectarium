@@ -1,0 +1,30 @@
+﻿@model Projectarium.Domain.Entities.Vacancy
+
+
+<div class="VacancyContainer FlexColumn">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="SecondaryTitle">@Model.Title</div>
+
+    <div class="VacancyTitleContainer">
+       
+        <div class="SecondaryTitle">Технологии:</div>
+    </div>
+  
+    <div id="@("Skills" + Model.Id)" class="SkillsContainer">
+        @foreach (var skill in Model.Skills)
+        {
+           @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/PreviewPartialViews/SkillView.cshtml", skill);
+
+        }
+
+    </div>
+    <div class="VacancyTitleContainer">
+        <div class="SecondaryTitle">Что мы предлагаем:</div>
+    </div>
+    <div> <p class="AboutVacancyTextBlock">@Model.Awards</p></div>
+
+
+
+</div>

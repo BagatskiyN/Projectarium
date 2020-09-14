@@ -19,6 +19,7 @@ body
     display:flex;
     justify-content:space-between;
     align-items:center;
+    padding:5px;
 }
 .HeaderBar {
     display: flex;
@@ -40,12 +41,20 @@ body
     margin-right: 160px;
 }
 .MainContainer {
-    width: 85%;
-   padding:15px;
+    width: 75%;
+    padding: 15px;
     border-left: 1px solid;
     border-right: 1px solid;
     align-content: center;
+min-height:100%;
+
 }
+.BodyContainer
+{display:flex;
+ width:100%;
+    min-height:100%;
+}
+
 .FlexColumn {
     display: flex;
     align-items: center;
@@ -109,6 +118,7 @@ body
     border: 1px solid;
     width:800px;
     height:400px;
+    padding:10px;
 }
 .ButtonContainer
 {

@@ -17,7 +17,7 @@
         <div id="@("Skills" + Model.Id)" class="SkillsContainer">
             @foreach (var skill in Model.Skills)
             {
-                @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/SkillViewEdit.cshtml", skill);
+                @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/EditPartialViews/EditSkillView.cshtml", skill);
 
             }
 

@@ -150,7 +150,7 @@ namespace Projectarium.WebUI.Controllers
 
                 _context.Vacancies.Add(vacancy);
                 _context.SaveChanges();
-                return PartialView("~/Views/Shared/ProjectManagerPartialViews/VacancyView.cshtml", vacancy);
+                return PartialView("~/Views/Shared/ProjectManagerPartialViews/EditPartialViews/EditVacancyView.cshtml", vacancy);
             }
             return new EmptyResult();
 
@@ -168,7 +168,7 @@ namespace Projectarium.WebUI.Controllers
             _context.Skills.Add(skill);
             await _context.SaveChangesAsync();
 
-            return PartialView("~/Views/Shared/ProjectManagerPartialViews/SkillViewEdit.cshtml", skill);
+            return PartialView("~/Views/Shared/ProjectManagerPartialViews/EditPartialViews/EditSkillView.cshtml", skill);
         }
         [HttpPost]
         public async Task<IActionResult> DeleteSkill([FromBody] int id)
@@ -198,7 +198,7 @@ namespace Projectarium.WebUI.Controllers
             Link link = new Link() { Mask = LinkMask, LinkText = IncomingLink.Link, Project = project };
             await _context.Links.AddAsync(link);
             await _context.SaveChangesAsync();
-            return PartialView("~/Views/Shared/ProjectManagerPartialViews/LinkView.cshtml", link);
+            return PartialView("~/Views/Shared/ProjectManagerPartialViews/EditPartialViews/EditLinkView.cshtml", link);
         }
 
         [HttpPost]
@@ -215,6 +215,21 @@ namespace Projectarium.WebUI.Controllers
             return Ok();
 
         }
+        public IActionResult PreviewProject(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Project project = _context.Projects
+                .Include(x => x.Vacancies)
+                .ThenInclude(vacancy => vacancy.Skills)
+                .Include(x => x.Links)
+                .FirstOrDefault(x => x.Id == id);
+
+            return View(project);
+        }
+
 
     }
 

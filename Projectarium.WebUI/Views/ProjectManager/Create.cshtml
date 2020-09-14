@@ -40,23 +40,6 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/ProjectManager.js" type="text/javascript" charset="utf-8"></script>
 }
-@*<script >
-    function NewVac() {
-        const url = '/ProjectManager/AddVacancy';
-        title = document.getElementById('TechTitle').value;
-        $.ajax(url, {
-            method: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify(title),
-            traditional: true,
-
-            success: function (data) {
-                $("#Vac").replaceWith(data);
-            }
-        });
-
-    }
-</script>*@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
