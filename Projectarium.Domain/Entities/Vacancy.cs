@@ -13,9 +13,12 @@ namespace Projectarium.Domain.Entities
         public int ProjectId { get; set; }
         public Project Project { get; set; }
         public List<Skill> Skills { get; set; }
+
+        public List<Request> Requests { get; set; }
         public Vacancy()
         {
             Skills = new List<Skill>();
+            Requests = new List<Request>();
             
         }
     }

@@ -1,0 +1,32 @@
+﻿@model Projectarium.Domain.Entities.Vacancy
+<div class="CreateProjectModalContainer">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class=" modal-dialog  ">
+            <div class="CreateProjectModal RequestModal">
+                <div class="modal-content modalContentStyle RequestModalContainer">
+                    <div class="modal-header">
+                        <input type="hidden" id="RequestVacancyId" asp-for="Id" name="name" value="@Model.Id" />
+                        <h4 class="modal-title" id="myModal-label">@Model.Title</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+
+                    </div>
+                    <div class="modal-body RequestModalContainer">
+                        <div class="form-group FlexColumn">
+                            <textarea  id="Motivation" class="AboutVacancyTextArea MotivationTextArea" placeholder=" "></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="btnOk" data-dismiss="modal" onclick="CreateRequest()">Ок</button>
+                            <button class="btn btn-primary" id="btnCancel" data-dismiss="modal" onclick="">Cancel</button>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

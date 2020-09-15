@@ -1,10 +1,11 @@
 ﻿@model Projectarium.Domain.Entities.Project
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Просмотр проекта";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 <link rel="stylesheet" href="~/css/ProjectManager.css" />
+<link rel="stylesheet" href="~/css/Main.css" />
 
 <hr />
 
@@ -56,7 +57,7 @@ else
 
 <div class="VacancyTitleContainer VacancyMainTitleContainer">
 
-    <div class="BlockTitle VacancyTitle">Ссылки:</div>
+    <div class="BlockTitle VacancyTitle">Связаться:</div>
 </div>
 
 
@@ -85,7 +86,7 @@ else
 {
     <p class="ProjectTitleBlock VacancyTitleContainer ">Ссылок нет</p>
 }
-
+<div class="modal fade" id="CreateRequestModal" role="dialog" data-url='@Url.Action("CreateRequestPartial","Home")'></div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -93,6 +94,6 @@ else
 }
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">К списку проектов</a>
 </div>
 

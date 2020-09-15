@@ -16,7 +16,7 @@ namespace Projectarium.Domain.Entities
      
         public List<Vacancy> Vacancies { get; set; }
         public List<Link> Links { get; set; }
-        public List<Request> Requests { get; set; }
+    
         public int? UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
         public Project()
@@ -24,7 +24,7 @@ namespace Projectarium.Domain.Entities
           
             Vacancies = new List<Vacancy>();
             Links = new List<Link>();
-            Requests = new List<Request>();
+      
         }
 
     }

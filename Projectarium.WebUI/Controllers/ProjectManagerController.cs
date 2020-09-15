@@ -61,31 +61,7 @@ namespace Projectarium.WebUI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //
-        //public IActionResult Create(Project project)
-        //{
-        //    if(ModelState.IsValid)
-        //    {
-        //        if (TempData.ContainsKey("Links"))
-        //        {
-        //            if(TempData["Links"]!=null)
-        //            {
-        //             project.Links = TempData["Links"] as List<Link>;
-        //            }
-        //        }
-        //        if (TempData.ContainsKey("Vacancies"))
-        //        {
-        //            if (TempData["Vacancies"] != null)
-        //            {
-        //                project.Vacancies= TempData["Vacancies"] as List<Vacancy>;
-        //            }
-        //        }
-        //        project.UserProfileId = _userManager.FindByNameAsync(User.Identity.Name).Id;
-        //        _context.Projects.Add(project);
-        //    }
-        //    return RedirectToAction("Index");
-
-        //}
+       
         [HttpPost]
         public async Task SaveProjectDescription([FromBody] SaveDescription saveDescription)
         {

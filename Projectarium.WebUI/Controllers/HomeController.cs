@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Projectarium.Domain.Concrete;
 using Projectarium.Domain.Entities;
+using Projectarium.WebUI.Models.AdminUsersVM;
+using Projectarium.WebUI.Models.ProjectManagerVM;
+using Projectarium.WebUI.Services;
+
 using Projectarium.WebUI.Models;
+using Projectarium.WebUI.Models.HomeVM;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace Projectarium.WebUI.Controllers
 {
@@ -31,6 +40,52 @@ namespace Projectarium.WebUI.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> ShowProjectPage(int id)
+        {
+        
+            Project project = _context.Projects
+                .Include(x => x.Vacancies)
+                .ThenInclude(vacancy => vacancy.Skills)
+                .Include(x => x.Links)
+                .FirstOrDefault(x => x.Id == id);
+
+            return View("~/Views/ProjectManager/PreviewProject.cshtml", project);
+        }
+        public async Task<IActionResult> CreateRequest(int id)
+        {
+            ClaimsPrincipal currentUser = this.User;
+
+            UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
+            Vacancy vacancy = await _context.Vacancies.FirstOrDefaultAsync(x => x.Id == id);
+            Project project = await _context.Projects.FirstOrDefaultAsync(x => x.Id == vacancy.ProjectId);
+            if (project.UserProfileId == userProfile.Id)
+            {
+                return Ok();
+            }
+            else
+            {
+                return PartialView("~/Views/Shared/HomePartialViews/CreateRequestModalView.cshtml", vacancy);
+            }
+
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateRequest([FromBody]NewRequest newRequest)
+        {
+            ClaimsPrincipal currentUser = this.User;
+            UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
+
+            Vacancy vacancy = await _context.Vacancies.FirstOrDefaultAsync(x=>x.Id==newRequest.VacancyId);
+
+            Request request = new Request() { Vacancy = vacancy, UserProfile = userProfile, Motivation = newRequest.Motivation };
+            await _context.AddAsync(request);
+            await _context.SaveChangesAsync();
+            return Ok();
+
+        }
+
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

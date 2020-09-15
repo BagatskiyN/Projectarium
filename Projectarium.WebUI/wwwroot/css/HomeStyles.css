@@ -1,0 +1,14 @@
+﻿.RequestModal
+{
+    border:none;
+    background-color:transparent;
+}
+.RequestModalContainer
+{
+    border-radius:20px;
+}
+.MotivationTextArea
+{
+    width:400px;
+    height:150px;
+}
