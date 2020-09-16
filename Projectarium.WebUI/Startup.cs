@@ -58,11 +58,11 @@ namespace Projectarium.WebUI
             {
                 options.AddPolicy("Admin",
                     policyBuilder => policyBuilder.RequireAssertion(
-                        context => !context.User.Claims.Any(c => c.Type == "AdminId")
+                        context => context.User.Claims.Any(c => c.Type == "AdminId")
                     ));
                 options.AddPolicy("User",
                   policyBuilder => policyBuilder.RequireAssertion(
-                      context => !context.User.Claims.Any(c => c.Type == "UserId")
+                      context => context.User.Claims.Any(c => c.Type == "UserId")
                   ));
             }); 
             services.AddControllers().AddNewtonsoftJson();

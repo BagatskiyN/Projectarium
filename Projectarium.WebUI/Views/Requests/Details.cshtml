@@ -1,0 +1,78 @@
+﻿@model Projectarium.Domain.Entities.Request
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<hr />
+
+@Html.AntiForgeryToken()
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input asp-for="Id" type="hidden" id="ProjectId" />
+
+<p class="ProjectTitleBlock">@Model.Vacancy.Title</p>
+<div class="VacancyTitleContainer VacancyMainTitleContainer">
+
+    <div class="BlockTitle VacancyTitle">Проект:</div>
+</div>
+<p class="ProjectTitleBlock">@Model.Vacancy.Project.Title</p>
+<p class="BlockTitle VacancyTitleContainer VacancyMainTitleContainer">Мотивация:</p>
+<p class="AboutProjectTextBlock MotivationText" id="TextAreaAboutProject">@Model.Motivation</p>
+<div class="VacancyTitleContainer VacancyMainTitleContainer">
+
+    <div class="BlockTitle VacancyTitle">Умения:</div>
+</div>
+
+
+
+
+@if (Model.UserProfile.Skills != null)
+{
+    if (Model.UserProfile.Skills.Count != 0)
+    {<div id="Skills" >
+            @foreach (var item in Model.UserProfile.Skills)
+            {
+         <div class="SkillRequestStyle">@await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/PreviewPartialViews/SkillView.cshtml", item)</div> 
+            }
+
+
+        </div>
+
+
+    }
+    else
+    {
+        <p class="NoElementsText ">Умения не добавлены</p>
+
+    }
+}
+else
+{
+    <p class="ProjectTitleBlock VacancyTitleContainer ">Умения не добавлены</p>
+}
+<div class="VacancyTitleContainer VacancyMainTitleContainer">
+
+    <div class="BlockTitle VacancyTitle">Ссылки:</div>
+</div>
+
+@if (Model.UserProfile.Links != null)
+{
+    if (Model.UserProfile.Links.Count != 0)
+    {<div id="Links" class="LinksContainer">
+
+            @foreach (var link in Model.UserProfile.Links)
+            {
+                @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/PreviewPartialViews/LinkView.cshtml", link);
+            }
+        </div>
+    }
+    else
+    {
+        <p class="NoElementsText ">Ссылок нет</p>
+
+    }
+
+}
+else
+{
+    <p class="ProjectTitleBlock VacancyTitleContainer ">Ссылок нет</p>
+}

@@ -17,9 +17,11 @@ using Projectarium.WebUI.Models;
 using Projectarium.WebUI.Models.HomeVM;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Projectarium.WebUI.Controllers
 {
+    [Authorize(Policy = "UserId")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -40,17 +42,17 @@ namespace Projectarium.WebUI.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> ShowProjectPage(int id)
-        {
+        //public async Task<IActionResult> ShowProjectPage(int id)
+        //{
         
-            Project project = _context.Projects
-                .Include(x => x.Vacancies)
-                .ThenInclude(vacancy => vacancy.Skills)
-                .Include(x => x.Links)
-                .FirstOrDefault(x => x.Id == id);
+        //    Project project = _context.Projects
+        //        .Include(x => x.Vacancies)
+        //        .ThenInclude(vacancy => vacancy.Skills)
+        //        .Include(x => x.Links)
+        //        .FirstOrDefault(x => x.Id == id);
 
-            return View("~/Views/ProjectManager/PreviewProject.cshtml", project);
-        }
+        //    return View("~/Views/ProjectManager/PreviewProject.cshtml", project);
+        //}
         public async Task<IActionResult> CreateRequest(int id)
         {
             ClaimsPrincipal currentUser = this.User;

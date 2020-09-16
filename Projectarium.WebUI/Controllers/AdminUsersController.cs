@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ using Projectarium.WebUI.Models.AdminUsersVM;
 
 namespace Projectarium.WebUI.Controllers
 {
+    [Authorize(Policy = "AdminId")]
     public class AdminUsersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -284,15 +286,16 @@ namespace Projectarium.WebUI.Controllers
         {
             if (newSkill.text != null)
             {
+                UserProfile userProfile = _context.UserProfiles.FirstOrDefault(x => x.Id == newSkill.id);
                 Skill skill = new Skill()
                 {
                     Title = newSkill.text,
-                    
+                    UserProfile = userProfile
                 };
-                NewSkills.Add(newSkill);
-                Skills.Add(skill);
+                _context.Skills.Add(skill);
+                _context.SaveChanges();
             }
-            return PartialView("~/Views/Shared/AdminUsersPartialViews/SkillsList.cshtml", Skills);
+            return PartialView("~/Views/Shared/AdminUsersPartialViews/SkillsList.cshtml", _context.Skills.Where(x=>x.Id==newSkill.id).ToList());
         }
 
 
