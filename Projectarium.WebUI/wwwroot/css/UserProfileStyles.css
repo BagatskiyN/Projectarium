@@ -1,0 +1,100 @@
+﻿.MainUserInformation
+{
+    border-top:1px solid;
+    border-bottom:1px solid;
+    width:100%;
+    height:500px;
+    display:flex;
+align-items:center;
+ padding:10px;
+
+}
+.EditIcon {
+    height: 45px;
+    width: 45px;
+    margin-right:20px;
+    background-image: url(../Content/icons/Edit.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+}
+.UserProfileTitleContainer
+{
+    width:100%;
+    display:flex;
+    align-content:center;
+}
+.UserProfileTitle
+{
+    width:100%;
+    text-align:center;
+}
+.UserProfilePhoto {
+    height: 300px;
+    width: 300px;
+    border: 1px solid;
+    margin-left:30px;
+    overflow:hidden;
+}
+    .UserProfilePhotoContainer
+    {
+        display:flex;
+        width:40%;
+        flex-direction:column;
+        justify-content:center;
+
+    }
+.AboutUserInformation {
+    border-left: 1px solid;
+    border-right: 1px solid;
+    margin-left: 30px;
+    margin-right: 30px;
+    display: flex;
+    flex-direction:column;
+    width: 60%;
+    height: 100%;
+}
+.AboutUserTitle {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    width:100%;
+    margin-top:30px;
+    margin-left:30px;
+}
+.AboutUserText {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 24px;
+    margin-left:30px;
+    margin-top:20px;
+    margin-right:30px;
+}
+.AboutUserTextArea {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 24px;
+    height:200px;
+    margin-left: 30px;
+    margin-right:30px;
+    margin-top: 20px;
+}
+.ChooseFileConatiner
+{
+    margin-top:20px;
+}
+.ChooseFileButton
+{
+    width:100px;
+    height:30px;
+    border:1px solid;
+    background-color:white;
+}
+.SaveButtonContainer
+{
+    margin-top:20px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+}

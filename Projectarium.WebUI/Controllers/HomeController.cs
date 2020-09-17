@@ -21,7 +21,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Projectarium.WebUI.Controllers
 {
-    [Authorize(Policy = "UserId")]
+    [Authorize]
+    [Authorize(Policy = "User")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

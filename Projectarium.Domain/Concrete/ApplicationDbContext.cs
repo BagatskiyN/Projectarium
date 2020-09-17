@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using System.Security.Claims;
+
 namespace Projectarium.Domain.Concrete
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
@@ -54,5 +57,24 @@ namespace Projectarium.Domain.Concrete
         {
             optionsBuilder.UseSqlServer(_conStr);
         }
+        public class AdminInitializer
+        {
+            public static async Task InitializeAsync(UserManager<ApplicationUser> userManager)
+            {
+                string adminEmail = "admin@gmail.com";
+                string password = "Admin1@";
+                var user = new ApplicationUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
+                var result = await userManager.CreateAsync(user, password);
+                if (result.Succeeded)
+                {
+                    ApplicationUser applicationUser = await userManager.FindByEmailAsync(adminEmail);
+
+
+                    await userManager.AddClaimAsync(user, new Claim("AdminId", applicationUser.Id.ToString()));
+
+                }
+            }
+        }
+        
     }
 }

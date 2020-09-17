@@ -49,6 +49,18 @@ namespace Projectarium.WebUI
             .AddRoles<ApplicationRole>()
             .AddDefaultUI()
             .AddDefaultTokenProviders();
+
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    // Cookie settings
+            //    options.Cookie.HttpOnly = true;
+            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+            //    options.LoginPath = "/Areas/Identity/Pages/Account/Login"; // Set here your login path.
+            //    options.AccessDeniedPath = "/Areas/Identity/Pages/Account/AccessDenied"; // set here your access denied path.
+            //    options.SlidingExpiration = true;
+            //});
+
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
             services.AddTransient<ILinkMasker, LinkMaskerService>();
             //.AddDefaultTokenProviders(); 

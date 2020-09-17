@@ -11,7 +11,7 @@ using Projectarium.Domain.Entities;
 
 namespace Projectarium.WebUI.Controllers
 {
-    [Authorize(Policy = "UserId")]
+    [Authorize(Policy = "User")]
     public class RequestsController : Controller
     {
         private readonly ApplicationDbContext _context;

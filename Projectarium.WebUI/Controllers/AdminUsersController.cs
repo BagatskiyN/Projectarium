@@ -18,7 +18,7 @@ using Projectarium.WebUI.Models.AdminUsersVM;
 
 namespace Projectarium.WebUI.Controllers
 {
-    [Authorize(Policy = "AdminId")]
+    [Authorize(Policy = "Admin")]
     public class AdminUsersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -86,6 +86,7 @@ namespace Projectarium.WebUI.Controllers
                     UserProfile userProfile = new UserProfile()
                     {   
                         Id=applicationUser.Id,
+                        ApplicationUser=applicationUser,
                         AboutUser = createUserVM.AboutUser
                     };
                     if(createUserVM.FormFile!=null)

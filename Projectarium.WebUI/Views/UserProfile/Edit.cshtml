@@ -5,20 +5,36 @@
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 
-<div class="UserProfileTitleContainer"><h1 class="UserProfileTitle">Ваш аккаунт</h1><div class="EditIcon"></div></div>
+<div class="UserProfileTitleContainer"><h1 class="UserProfileTitle">Редактирование аккаунта</h1></div>
 
 <div class="MainUserInformation">
     <div class="UserProfilePhotoContainer">
         <div class="UserProfilePhoto">
-            <img src="@Url.Action("GetUserImage", "UserProfile",
+            @if (Model.ImageData == null || Model.ImageMimeType == null)
+            {
+                <img id="image" class="img-thumbnail" src="" />
+            }
+            else
+            {
+                <img id="image" class="img-thumbnail" src="@Url.Action("GetUserProfileImage", "UserProfile",
                 new { Model.Id})" />
+            }
+
+
         </div>
+        <div class="ChooseFileConatiner">
+            <input name="FormFile" id="imgInput" type="file" class="form-control " />
+        </div>
+    
     </div>
     <div class="AboutUserInformation">
         <div class="AboutUserTitle ">Имя</div>
-        <div class="AboutUserText">@Model.Name</div>
+        <input type="text" class="AboutUserText" id="UserName" value="@Model.Name">
         <div class="AboutUserTitle ">О себе:</div>
-        <div class="AboutUserText">@Model.AboutUser</div>
+        <textarea class="AboutUserTextArea" id="AboutUser">@Model.AboutUser</textarea>
+        <div class="form-group SaveButtonContainer">
+            <input type="submit" value="Сохранить" onclick="SaveUserData()" class="btn btn-primary" />
+        </div>
     </div>
 </div>
 <div class="VacancyTitleContainer VacancyMainTitleContainer">
@@ -78,3 +94,26 @@ else
     <p class="ProjectTitleBlock VacancyTitleContainer ">Ссылок нет</p>
 }
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script type="text/javascript">
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imgInput").change(function () {
+            readURL(this);
+        });
+    </script>
+}

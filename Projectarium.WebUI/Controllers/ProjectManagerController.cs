@@ -16,7 +16,7 @@ using Projectarium.WebUI.Services;
 
 namespace Projectarium.WebUI.Controllers
 {
-    [Authorize(Policy = "UserId")]
+    [Authorize(Policy = "User")]
     public class ProjectManagerController : Controller
     {
 
