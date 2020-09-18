@@ -63,7 +63,7 @@ function AddSkill(e, id) {
 
 }
 
-function DeleteSkill(id) {
+function DeleteSkill(e,id) {
 
     const url = '/ProjectManager/DeleteSkill'; 
 
@@ -74,10 +74,12 @@ function DeleteSkill(id) {
         traditional: true,
 
         success: function (data) {
-            let elemName = "Skill" + id;
-            let elem = document.getElementById(elemName);
-            console.log(elem);
-            elem.remove();
+            
+            //let elemName = "Skill" + id;
+            //let elem = document.getElementById(elemName);
+            e.parentElement.remove();
+            //console.log(elem);
+            //elem.remove();
 
            
         }

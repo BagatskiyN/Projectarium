@@ -26,6 +26,7 @@ namespace Projectarium.WebUI.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+
         ILinkMasker _linkMasker;
         public UserProfileController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ILinkMasker linkMasker)
         {
@@ -45,8 +46,10 @@ namespace Projectarium.WebUI.Controllers
 
             return View(userProfile);
         }
-        public async Task<IActionResult> IndexById(int id)
-        { 
+
+        [HttpGet("UserProfile/Index/id")]
+        public async Task<IActionResult> Index(int id)
+        {
             UserProfile userProfile = await _context.UserProfiles
                 .Include(x => x.Links)
                 .Include(x => x.Skills)
@@ -66,7 +69,7 @@ namespace Projectarium.WebUI.Controllers
             return View(userProfile);
         }
         [HttpPost]
-        public async Task Edit(string UserName,string AboutUser,IFormFile Image)
+        public async Task Edit(string UserName, string AboutUser, IFormFile Image)
         {
             ClaimsPrincipal currentUser = this.User;
             UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
@@ -81,6 +84,78 @@ namespace Projectarium.WebUI.Controllers
             await _context.SaveChangesAsync();
 
         }
+        [HttpPost]
+        public async Task<IActionResult> AddUserLink([FromBody] string link)
+        {
+            ClaimsPrincipal currentUser = this.User;
+            UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                Uri uri = new Uri(link);
+                Link link1 = new Link()
+                {
+                    LinkText = link,
+                    Mask = _linkMasker.MaskLink(uri),
+                    UserProfile = userProfile
+
+                };
+                await _context.Links.AddAsync(link1);
+                await _context.SaveChangesAsync();
+                return PartialView("~/Views/Shared/ProjectManagerPartialViews/EditPartialViews/EditLinkView.cshtml", link1);
+            }
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddUserSkill([FromBody] string Title)
+        {
+            ClaimsPrincipal currentUser = this.User;
+            UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                Skill skill = new Skill()
+                {
+                    Title = Title,
+                    UserProfile = userProfile
+                };
+                await _context.Skills.AddAsync(skill);
+                await _context.SaveChangesAsync();
+                return PartialView("~/Views/Shared/ProjectManagerPartialViews/EditPartialViews/EditSkillView.cshtml", skill);
+            }
+
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CheckUser([FromBody] int? Id)
+        {
+            ClaimsPrincipal currentUser = this.User;
+            UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
+           
+            if(Id==userProfile.Id)
+            {
+
+            return PartialView("~/Views/Shared/UserProfilePartialViews/EditProfileHeaderView.cshtml");
+            }
+            else
+            {
+                return PartialView("~/Views/Shared/UserProfilePartialViews/ViewProfileHeaderView.cshtml");
+            }
+
+
+        }
+
+
+
+
+
 
         public async Task<FileContentResult> GetUserProfileImage(int id)
         {

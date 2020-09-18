@@ -5,12 +5,17 @@
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 
-<div class="UserProfileTitleContainer"><h1 class="UserProfileTitle">Ваш аккаунт</h1><div class="EditIcon"></div></div>
+<div class="UserProfileTitleContainer" id="UserProfileHeader">
 
+
+
+
+</div>
+<input asp-for="Id" type="hidden" id="Id" />
 <div class="MainUserInformation">
     <div class="UserProfilePhotoContainer">
         <div class="UserProfilePhoto">
-            <img src="@Url.Action("GetUserImage", "UserProfile",
+            <img src="@Url.Action("GetUserProfileImage", "UserProfile",
                 new { Model.Id})" />
         </div>
     </div>
@@ -21,60 +26,85 @@
         <div class="AboutUserText">@Model.AboutUser</div>
     </div>
 </div>
-<div class="VacancyTitleContainer VacancyMainTitleContainer">
+<div class="SecondaryInfoContainer">
+    <div class="SecondaryInfoBlock">
+        <div class="VacancyTitleContainer VacancyMainTitleContainer">
 
-    <div class="BlockTitle VacancyTitle">Умения:</div>
-</div>
-
-@if (Model.Skills != null)
-{
-    if (Model.Skills.Count != 0)
-    {<div id="Skills">
-            @foreach (var item in Model.Skills)
-            {
-                <div class="SkillRequestStyle">@await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/PreviewPartialViews/SkillView.cshtml", item)</div>
-            }
-
-
+            <div class="BlockTitle VacancyTitle">Умения:</div>
         </div>
 
-
-    }
-    else
-    {
-        <p class="NoElementsText ">Умения не добавлены</p>
-
-    }
-}
-else
-{
-    <p class="ProjectTitleBlock VacancyTitleContainer ">Умения не добавлены</p>
-}
-<div class="VacancyTitleContainer VacancyMainTitleContainer">
-
-    <div class="BlockTitle VacancyTitle">Ссылки:</div>
-</div>
-
-@if (Model.Links != null)
-{
-    if (Model.Links.Count != 0)
-    {<div id="Links" class="LinksContainer">
-
-            @foreach (var link in Model.Links)
-            {
-                @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/PreviewPartialViews/LinkView.cshtml", link);
+        @if (Model.Skills != null)
+        {
+            if (Model.Skills.Count != 0)
+            {<div id="Skills" class="SecondaryInfoList">
+                    @foreach (var item in Model.Skills)
+                    {
+                        <div class="SkillRequestStyle">@await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/PreviewPartialViews/SkillView.cshtml", item)</div>
+                    }
+                </div>
             }
+            else
+            {
+                <p class="NoElementsText ">Умения не добавлены</p>
+
+            }
+        }
+        else
+        {
+            <p class="ProjectTitleBlock VacancyTitleContainer ">Умения не добавлены</p>
+        }
+    </div>
+    <div class="SecondaryInfoBlock">
+        <div class="VacancyTitleContainer VacancyMainTitleContainer">
+
+            <div class="BlockTitle VacancyTitle">Ссылки:</div>
         </div>
-    }
-    else
-    {
-        <p class="NoElementsText ">Ссылок нет</p>
 
-    }
+        @if (Model.Links != null)
+        {
+            if (Model.Links.Count != 0)
+            {<div id="Links" class="SecondaryInfoList">
 
-}
-else
-{
-    <p class="ProjectTitleBlock VacancyTitleContainer ">Ссылок нет</p>
-}
+                    @foreach (var link in Model.Links)
+                    {
+                        @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/PreviewPartialViews/LinkView.cshtml", link);
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="NoElementsText ">Ссылок нет</p>
 
+            }
+
+        }
+        else
+        {
+            <p class="ProjectTitleBlock VacancyTitleContainer ">Ссылок нет</p>
+        }
+    </div>
+
+</div>
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+
+            const url = '/UserProfile/CheckUser';
+
+
+            $.ajax(url, {
+                method: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(document.getElementById('Id').value),
+                traditional: true,
+
+                success: function (data) {
+                    $("#UserProfileHeader").append(data);
+                }
+            });
+
+
+        });
+
+
+</script>

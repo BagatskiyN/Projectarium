@@ -6,7 +6,7 @@
 }
 
 <div class="UserProfileTitleContainer"><h1 class="UserProfileTitle">Редактирование аккаунта</h1></div>
-
+@Html.AntiForgeryToken()
 <div class="MainUserInformation">
     <div class="UserProfilePhotoContainer">
         <div class="UserProfilePhoto">
@@ -25,7 +25,7 @@
         <div class="ChooseFileConatiner">
             <input name="FormFile" id="imgInput" type="file" class="form-control " />
         </div>
-    
+
     </div>
     <div class="AboutUserInformation">
         <div class="AboutUserTitle ">Имя</div>
@@ -37,63 +37,86 @@
         </div>
     </div>
 </div>
-<div class="VacancyTitleContainer VacancyMainTitleContainer">
+<div class="SecondaryInfoContainer">
+    <div class="SecondaryInfoBlock">
+        <div class="VacancyTitleContainer VacancyMainTitleContainer">
 
-    <div class="BlockTitle VacancyTitle">Умения:</div>
-</div>
-
-@if (Model.Skills != null)
-{
-    if (Model.Skills.Count != 0)
-    {<div id="Skills">
-            @foreach (var item in Model.Skills)
-            {
-                <div class="SkillRequestStyle">@await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/PreviewPartialViews/SkillView.cshtml", item)</div>
-            }
-
-
+            <div class="BlockTitle VacancyTitle">Умения:</div>
+        </div>
+        <div class="VacancyTitleContainer  VacancyMainTitleContainer">
+            <input type="text" id="SkillText" class="NewLinkInput" /><div class="AddItemButton" onclick="AddSkillUserProfile()">Добавить</div>
         </div>
 
 
-    }
-    else
-    {
-        <p class="NoElementsText ">Умения не добавлены</p>
 
-    }
-}
-else
-{
-    <p class="ProjectTitleBlock VacancyTitleContainer ">Умения не добавлены</p>
-}
-<div class="VacancyTitleContainer VacancyMainTitleContainer">
+        @if (Model.Skills != null)
+        {
+            if (Model.Skills.Count != 0)
+            {<div id="Skills" class="SecondaryInfoList">
+                    @foreach (var item in Model.Skills)
+                    {
+                        <div class="SkillRequestStyle">@await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/EditPartialViews/EditSkillView.cshtml", item)</div>
+                    }
 
-    <div class="BlockTitle VacancyTitle">Ссылки:</div>
-</div>
 
-@if (Model.Links != null)
-{
-    if (Model.Links.Count != 0)
-    {<div id="Links" class="LinksContainer">
+                </div>
 
-            @foreach (var link in Model.Links)
-            {
-                @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/PreviewPartialViews/LinkView.cshtml", link);
+
             }
+            else
+            {
+                <div id="Skills" class="SecondaryInfoList">
+                    <p class="NoElementsText SecondaryInfoList" id="NoSkill">Умения не добавлены</p>
+                </div>
+
+            }
+        }
+        else
+        {
+            <div id="Skills" class="SecondaryInfoList">
+                <p class="ProjectTitleBlock VacancyTitleContainer SecondaryInfoList" id="NoSkill">Умения не добавлены</p>
+            </div>
+        }
+    </div>
+    <div class="SecondaryInfoBlock">
+        <div class="VacancyTitleContainer VacancyMainTitleContainer">
+
+            <div class="BlockTitle VacancyTitle">Ссылки:</div>
         </div>
-    }
-    else
-    {
-        <p class="NoElementsText ">Ссылок нет</p>
+        <div class="VacancyTitleContainer  VacancyMainTitleContainer">
+            <input type="text" id="LinkText" class="NewLinkInput" /><div class="AddItemButton" onclick="AddUserLink()">Добавить</div>
+        </div>
 
-    }
 
-}
-else
-{
-    <p class="ProjectTitleBlock VacancyTitleContainer ">Ссылок нет</p>
-}
+        @if (Model.Links != null)
+        {
+            if (Model.Links.Count != 0)
+            {<div id="Links" class=" SecondaryInfoList">
 
+                    @foreach (var link in Model.Links)
+                    {
+                        @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/EditPartialViews/EditLinkView.cshtml", link);
+                    }
+                </div>
+            }
+            else
+            {
+    <div id="Links" class="SecondaryInfoList">
+        <p class="NoElementsText SecondaryInfoList" id="NoLink">Ссылок нет</p>
+    </div>
+              
+
+            }
+
+        }
+        else
+        {<div id="Links" class="SecondaryInfoList">
+    <p class="ProjectTitleBlock VacancyTitleContainer SecondaryInfoList" id="NoLink">Ссылок нет</p>
+</div>
+ 
+        }
+    </div>
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 

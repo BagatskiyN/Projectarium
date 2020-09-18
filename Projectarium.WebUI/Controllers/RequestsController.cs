@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,10 +24,16 @@ namespace Projectarium.WebUI.Controllers
             _context = context;
 
         }
-
+        [HttpGet("Requests/Index/id")]
         public IActionResult Index(int id)
         {
-            List<Request> requests = _context.Requests.Include(x => x.UserProfile).Include(x => x.Vacancy).ToList();
+
+            List<Vacancy> vacancies = _context.Vacancies.Include(x => x.Requests).Where(x => x.ProjectId == id).ToList();
+            List<Request> requests = new List<Request>();
+            foreach (var item in vacancies)
+            {
+                requests.AddRange(item.Requests);
+            }
             return View(requests);
         }
         public async Task<IActionResult> Details(int id)
@@ -39,5 +46,21 @@ namespace Projectarium.WebUI.Controllers
             return View(request);
 
         }
+
+        public async Task<IActionResult> Index()
+        {
+            ClaimsPrincipal currentUser = this.User;
+            UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
+            List<Request> requests = _context.Projects.Include(x => x.UserProfile)
+                .Include(x => x.Vacancies)
+                        .SelectMany(x => x.Vacancies
+                                .SelectMany(x => x.Requests))
+                                    .Include(x=>x.Vacancy)
+                                       .Where(x => x.UserProfileId == userProfile.Id)
+                .ToList();
+
+            return View(requests);
+        }
+
     }
 }
