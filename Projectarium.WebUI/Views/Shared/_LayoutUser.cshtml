@@ -16,14 +16,23 @@
 <body class="FlexColumn BodyContainer">
     <header class="Header">
         <div class="HeaderBar">
-        <div class="MenuItem">
-            <a asp-controller="Home" asp-action="Index">Главная</a>
+            <div class="MenuItem">
+                <a asp-controller="Home" asp-action="Index">Главная</a>
             </div><div class="MenuItem">
-            <a asp-controller="ProjectManager" asp-action="Index">Мои проекты</a>
-                </div><div class="MenuItem">
-    <a href="/Requests/Index">Мои запросы</a>
-</div></div>
-        <div class="UserIcon"></div>
+                <a asp-controller="ProjectManager" asp-action="Index">Мои проекты</a>
+            </div><div class="MenuItem">
+                <a href="/Requests/Index">Мои запросы</a>
+            </div>
+            <div>
+                <div class="MenuItem">
+                    <a href="/UserProfile/Index">Профиль </a>
+                </div>
+            </div>
+        </div>
+        <div>
+
+            <partial name="_LoginPartial" />
+        </div>
     </header>
     <div class="MainContainer FlexColumn ">
         @RenderBody()

@@ -73,13 +73,25 @@ namespace Projectarium.WebUI.Controllers
         {
             ClaimsPrincipal currentUser = this.User;
             UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
-            userProfile.Name = UserName;
-            userProfile.AboutUser = AboutUser;
-            using (var binaryReader = new BinaryReader(Image.OpenReadStream()))
+            if (UserName != null)
             {
-                userProfile.ImageData = binaryReader.ReadBytes((int)Image.Length);
-                userProfile.ImageMimeType = Image.ContentType;
+                userProfile.Name = UserName;
             }
+
+            if (AboutUser != null)
+            {
+
+                userProfile.AboutUser = AboutUser;
+            }
+            if (Image != null)
+            {
+                using (var binaryReader = new BinaryReader(Image.OpenReadStream()))
+                {
+                    userProfile.ImageData = binaryReader.ReadBytes((int)Image.Length);
+                    userProfile.ImageMimeType = Image.ContentType;
+                }
+            }
+
             _context.UserProfiles.Update(userProfile);
             await _context.SaveChangesAsync();
 
@@ -138,11 +150,11 @@ namespace Projectarium.WebUI.Controllers
         {
             ClaimsPrincipal currentUser = this.User;
             UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
-           
-            if(Id==userProfile.Id)
+
+            if (Id == userProfile.Id)
             {
 
-            return PartialView("~/Views/Shared/UserProfilePartialViews/EditProfileHeaderView.cshtml");
+                return PartialView("~/Views/Shared/UserProfilePartialViews/EditProfileHeaderView.cshtml");
             }
             else
             {

@@ -1,32 +1,41 @@
-﻿@model Projectarium.Domain.Entities.Vacancy
+﻿@using System.Security.Claims;
+@inject Projectarium.WebUI.Services.ISameUserCheckerService SameUserChecker
+@model Projectarium.Domain.Entities.Vacancy
 
-    <div>
-        <div class="VacancyContainer FlexColumn">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+<div>
+    <div class="VacancyContainer FlexColumn">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
 
-            <div class="SecondaryTitle">@Model.Title</div>
+        <div class="SecondaryTitle">@Model.Title</div>
 
-            <div class="VacancyTitleContainer">
+        <div class="VacancyTitleContainer">
 
-                <div class="SecondaryTitle">Технологии:</div>
-            </div>
+            <div class="SecondaryTitle">Технологии:</div>
+        </div>
 
-            <div id="@("Skills" + Model.Id)" class="SkillsContainer">
-                @foreach (var skill in Model.Skills)
-                {
-                    @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/PreviewPartialViews/SkillView.cshtml", skill);
+        <div id="@("Skills" + Model.Id)" class="SkillsContainer">
+            @foreach (var skill in Model.Skills)
+            {
+                @await Html.PartialAsync("~/Views/Shared/ProjectManagerPartialViews/PreviewPartialViews/SkillView.cshtml", skill);
 
-                }
-
-            </div>
-            <div class="VacancyTitleContainer">
-                <div class="SecondaryTitle">Что мы предлагаем:</div>
-            </div>
-            <div> <p class="AboutVacancyTextBlock">@Model.Awards</p></div>
-
-
+            }
 
         </div>
-        <button class="RequestButton" onclick="GetRequestModal(@Model.Id)">Подать заявку</button>
+        <div class="VacancyTitleContainer">
+            <div class="SecondaryTitle">Что мы предлагаем:</div>
+        </div>
+        <div> <p class="AboutVacancyTextBlock">@Model.Awards</p></div>
+
+    </div>
+
+        @if (SameUserChecker.SameUserCheckerByVacation(User, Model.Id).Result)
+        {<button class="RequestButton" >Подать заявку</button>
+        }
+
+        else
+        {
+            <button class="RequestButton" onclick="GetRequestModal(@Model.Id)">Подать заявку</button>
+        }
+
     </div>

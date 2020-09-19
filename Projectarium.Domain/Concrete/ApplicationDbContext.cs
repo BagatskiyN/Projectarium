@@ -17,7 +17,7 @@ namespace Projectarium.Domain.Concrete
             : base(options)
         {
 
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Link> Links { get; set; }

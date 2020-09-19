@@ -2,3 +2,9 @@
 @import url('UserHeader.css');
 @import url('HomeStyles.css');
 @import url('RequestPageStyles.css');
+
+.IdentityBar
+{
+    display:flex;
+
+}

@@ -63,6 +63,7 @@ namespace Projectarium.WebUI
 
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
             services.AddTransient<ILinkMasker, LinkMaskerService>();
+            services.AddTransient<ISameUserCheckerService,SameUserCheckerService>();
             //.AddDefaultTokenProviders(); 
             services.AddControllersWithViews();
             services.AddRazorPages();
