@@ -207,7 +207,34 @@ namespace Projectarium.WebUI.Controllers
 
             return View(project);
         }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var project = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            return View(project);
+        }
+
+        // POST: ProjectManager/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var project = await _context.Projects.FirstOrDefaultAsync(x => x.Id == id);
+            _context.Projects.Remove(project);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
 
     }
 

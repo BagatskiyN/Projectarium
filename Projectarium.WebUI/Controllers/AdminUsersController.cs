@@ -24,9 +24,9 @@ namespace Projectarium.WebUI.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public static List<Skill> Skills { get; set; } = new List<Skill>();
+        //public static List<Skill> Skills { get; set; } = new List<Skill>();
    
-        public static List<NewSkill> NewSkills { get; set; } = new List<NewSkill>();
+        //public static List<NewSkill> NewSkills { get; set; } = new List<NewSkill>();
         public AdminUsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
@@ -113,7 +113,7 @@ namespace Projectarium.WebUI.Controllers
                 }
             }
      
-            return RedirectToAction("AdminUsers","Index");
+            return RedirectToAction("Index","AdminUsers");
         }
 
         // GET: AdminUsers/Edit/5
@@ -137,12 +137,12 @@ namespace Projectarium.WebUI.Controllers
                 ImageData=userProfile.ImageData,
                 ImageType=userProfile.ImageMimeType
             };
-            Skills = _context.UserProfiles
-                .Include(u => u.Skills)
-                .FirstOrDefault(x => x.Id ==id)
-                .Skills
-                .ToList();
-            editUserVM.Skills = Skills;
+            //Skills = _context.UserProfiles
+            //    .Include(u => u.Skills)
+            //    .FirstOrDefault(x => x.Id ==id)
+            //    .Skills
+            //    .ToList();
+            //editUserVM.Skills = Skills;
             if (applicationUser== null)
             {
                 return NotFound();
@@ -172,28 +172,28 @@ namespace Projectarium.WebUI.Controllers
 
                     UserProfile userProfile = await _context.UserProfiles.FindAsync(id);
                     userProfile.AboutUser = editUserVM.AboutUser;
-                   List<Skill>  FormerSkillsList =_context.UserProfiles
-                        .Include(u => u.Skills)
-                        .FirstOrDefault(x => x.Id == id)
-                        .Skills
-                       .ToList();
-                    List<Skill> DeletedSkills = FormerSkillsList.Except(Skills).ToList();
+                   //List<Skill>  FormerSkillsList =_context.UserProfiles
+                   //     .Include(u => u.Skills)
+                   //     .FirstOrDefault(x => x.Id == id)
+                   //     .Skills
+                   //    .ToList();
+                   // List<Skill> DeletedSkills = FormerSkillsList.Except(Skills).ToList();
 
-                    foreach (var skill in DeletedSkills)
-                    {
-                       _context.Skills.Remove(skill);
-                    }
-                   foreach(var item in NewSkills)
-                    {
-                        Skill skill = new Skill()
-                        {
-                            Title = item.text,
-                          UserProfile=userProfile
-                        };
-                        await _context.Skills.AddAsync(skill);
-                        await _context.SaveChangesAsync();
+                    //foreach (var skill in DeletedSkills)
+                    //{
+                    //   _context.Skills.Remove(skill);
+                    //}
+                   //foreach(var item in NewSkills)
+                   // {
+                   //     Skill skill = new Skill()
+                   //     {
+                   //         Title = item.text,
+                   //       UserProfile=userProfile
+                   //     };
+                   //     await _context.Skills.AddAsync(skill);
+                   //     await _context.SaveChangesAsync();
                    
-                    }
+                   // }
                 
                     //foreach (var item in NewSkills)
                     //{
@@ -247,6 +247,7 @@ namespace Projectarium.WebUI.Controllers
 
             var userProfile = await _context.UserProfiles
                 .Include(u => u.ApplicationUser)
+
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userProfile == null)
             {
@@ -261,24 +262,31 @@ namespace Projectarium.WebUI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userProfile = await _context.UserProfiles.FindAsync(id);
+            var userProfile = await _context.UserProfiles.Include(x=>x.Projects).FirstOrDefaultAsync(x=>x.Id==id);
+            ApplicationUser applicationUser = await _context.ApplicationUsers.FindAsync(id);
+            foreach(var project in userProfile.Projects)
+            {
+                _context.Projects.Remove(project);
+            }
             _context.UserProfiles.Remove(userProfile);
+            await _context.SaveChangesAsync();
+            _context.ApplicationUsers.Remove(applicationUser);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        public IActionResult DeleteSkill([FromBody]string text)
-        {
-            Skill skill = Skills.Where(x => x.Title == text).FirstOrDefault();
-            Skills.Remove(skill);
+        //[HttpPost]
+        //public IActionResult DeleteSkill([FromBody]string text)
+        //{
+        //    Skill skill = Skills.Where(x => x.Title == text).FirstOrDefault();
+        //    Skills.Remove(skill);
             
-            NewSkill newSkill = NewSkills.Where(x => x.text == text).FirstOrDefault();
+        //    NewSkill newSkill = NewSkills.Where(x => x.text == text).FirstOrDefault();
     
-            NewSkills.Remove(newSkill);
-            return PartialView("~/Views/Shared/AdminUsersPartialViews/SkillsList.cshtml", Skills);
+        //    NewSkills.Remove(newSkill);
+        //    return PartialView("~/Views/Shared/AdminUsersPartialViews/SkillsList.cshtml", Skills);
 
-        }
+        //}
    
 
 

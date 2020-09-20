@@ -16,7 +16,7 @@ namespace Projectarium.Domain.Concrete
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-
+    
             Database.EnsureCreated();
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
@@ -27,8 +27,7 @@ namespace Projectarium.Domain.Concrete
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Vacancy> Vacancies { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //Один-к-одному объеденяющий пользователя и аккаунт идентификации
+        {     //Один-к-одному объеденяющий пользователя и аккаунт идентификации
             modelBuilder
        .Entity<ApplicationUser>()
        .HasOne(u => u.UserProfile)
@@ -47,12 +46,92 @@ namespace Projectarium.Domain.Concrete
           .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
-     
-          
+
+              modelBuilder.Entity<Vacancy>()
+                .HasOne(a => a.Project)
+             .WithMany(a => a.Vacancies)
+               .HasForeignKey(x => x.ProjectId)
+          .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Link>()
+          .HasOne(a => a.Project)
+          .WithMany(a => a.Links)
+             .HasForeignKey(x => x.ProjectId)
+          .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Request>()
+            .HasOne(a => a.UserProfile)
+            .WithMany(a => a.Requests)
+             .HasForeignKey(x => x.UserProfileId)
+            .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Project>()
+            //  .HasOne(a => a.UserProfile)
+            //  .WithMany(a => a.Projects)
+            //   .HasForeignKey(x => x.UserProfileId)
+            //  .OnDelete(DeleteBehavior.Cascade);
+
+            //     //Один-к-одному объеденяющий пользователя и аккаунт идентификации
+            //     modelBuilder
+            //.Entity<ApplicationUser>()
+            //.HasOne(u => u.UserProfile)
+            //.WithOne(p => p.ApplicationUser)
+            //.HasForeignKey<UserProfile>(p => p.Id)
+            //.HasPrincipalKey<ApplicationUser>(c => c.Id);
+
+            //     modelBuilder.Entity<Skill>()
+            //      .HasOne(a => a.Vacancy)
+            //      .WithMany(a => a.Skills)
+            //      .OnDelete(DeleteBehavior.Cascade);
+            //     //     .HasForeignKey(x=>x.VacancyId)
 
 
-         
-        } 
+            //     //    modelBuilder.Entity<Vacancy>()
+            //     //     .HasOne(a => a.Project)
+            //     //     .WithMany(a => a.Vacancies)
+            //     //        .HasForeignKey(x => x.ProjectId)
+            //     //     .OnDelete(DeleteBehavior.Cascade);
+
+
+            //     //    modelBuilder.Entity<Link>()
+            //     //  .HasOne(a => a.Project)
+            //     //  .WithMany(a => a.Links)
+            //     //     .HasForeignKey(x => x.ProjectId)
+            //     //  .OnDelete(DeleteBehavior.Cascade);
+
+            //     //    modelBuilder.Entity<Link>()
+            //     //.HasOne(a => a.UserProfile)
+            //     //.WithMany(a => a.Links)
+            //     //   .HasForeignKey(x => x.UserProfileId)
+            //     //.OnDelete(DeleteBehavior.Cascade);
+
+            //     modelBuilder.Entity<Project>()
+            //          .HasOne(a => a.UserProfile)
+            //          .WithMany(a => a.Projects)
+            //           .HasForeignKey(x => x.UserProfileId)
+            //          .OnDelete(DeleteBehavior.Cascade);
+
+            //     modelBuilder.Entity<Skill>()
+            //   .HasOne(a => a.UserProfile)
+            //   .WithMany(a => a.Skills)
+            //   // .HasForeignKey(x => x.UserProfileId)
+            //   //.OnDelete(DeleteBehavior.Cascade);
+
+            //   //  modelBuilder.Entity<Request>()
+            //   //  .HasOne(a => a.UserProfile)
+            //   //  .WithMany(a => a.Requests)
+            //   //   .HasForeignKey(x => x.UserProfileId)
+            //     .OnDelete(DeleteBehavior.Cascade);
+
+            //     //modelBuilder.Entity<Request>()
+            //     //.HasOne(a => a.Vacancy)
+            //     //.WithMany(a => a.Requests)
+            //     // .HasForeignKey(x => x.VacancyId)
+            //     //.OnDelete(DeleteBehavior.Cascade);
+            //     base.OnModelCreating(modelBuilder);
+
+
+
+
+
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_conStr);
@@ -75,6 +154,6 @@ namespace Projectarium.Domain.Concrete
                 }
             }
         }
-        
+
     }
 }

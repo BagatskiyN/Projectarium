@@ -9,7 +9,7 @@ namespace Projectarium.Domain.Entities
         public int Id { get; set; }
         public string Mask { get; set; }
         public string LinkText { get; set; }
-        public int? UserId { get; set; }
+        public int? UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
         public int? ProjectId { get; set; }
         public Project Project { get; set; }

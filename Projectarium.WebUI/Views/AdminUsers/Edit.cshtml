@@ -19,24 +19,30 @@
                 <span asp-validation-for="AboutUser" class="text-danger"></span>
             </div>
         
-            <div id="Skills">
-
-                @if (Model.Skills.Count != 0)
+            @*<div id="Skills">
+                @if (Model.Skills != null)
                 {
-                    @await Html.PartialAsync("~/Views/Shared/AdminUsersPartialViews/SkillsList.cshtml", Model.Skills);
+                    @if (Model.Skills.Count != 0)
+                    {
+                        @await Html.PartialAsync("~/Views/Shared/AdminUsersPartialViews/SkillsList.cshtml", Model.Skills);
+                    }
+                    else
+                    {
+                        <p>Нет данных о способностях</p>
+                    }
                 }
                 else
                 {
                     <p>Нет данных о способностях</p>
                 }
-            </div>
+            </div>*@
 
 
 
-            <input type="text" id="SkillText" />
-            <div class="form-group">
+            @*<input type="text" id="SkillText" />*@
+            @*<div class="form-group">
                 <a onclick="AddSkill(@Model.Id)" class="btn btn-primary">Добавить умение</a>
-            </div>
+            </div>*@
             <table class="table">
                 <thead>
                     <tr>

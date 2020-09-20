@@ -11,7 +11,7 @@ namespace Projectarium.Domain.Entities
 
         [Display(Name = "Название проекта")]
         public string Title { get; set; }
-        public int Likes { get; set; }
+      
         public string AboutProject { get; set; }
      
         public List<Vacancy> Vacancies { get; set; }
