@@ -16,7 +16,7 @@ namespace Projectarium.Domain.Concrete
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-    
+
             Database.EnsureCreated();
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
@@ -47,11 +47,11 @@ namespace Projectarium.Domain.Concrete
 
             base.OnModelCreating(modelBuilder);
 
-              modelBuilder.Entity<Vacancy>()
-                .HasOne(a => a.Project)
-             .WithMany(a => a.Vacancies)
-               .HasForeignKey(x => x.ProjectId)
-          .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Vacancy>()
+              .HasOne(a => a.Project)
+           .WithMany(a => a.Vacancies)
+             .HasForeignKey(x => x.ProjectId)
+        .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Link>()
           .HasOne(a => a.Project)
           .WithMany(a => a.Links)
@@ -62,6 +62,16 @@ namespace Projectarium.Domain.Concrete
             .WithMany(a => a.Requests)
              .HasForeignKey(x => x.UserProfileId)
             .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Skill>()
+          .HasOne(a => a.UserProfile)
+          .WithMany(a => a.Skills)
+           .HasForeignKey(x => x.UserProfileId)
+            .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Link>()
+        .HasOne(a => a.UserProfile)
+        .WithMany(a => a.Links)
+           .HasForeignKey(x => x.UserProfileId)
+        .OnDelete(DeleteBehavior.Cascade);
             //modelBuilder.Entity<Project>()
             //  .HasOne(a => a.UserProfile)
             //  .WithMany(a => a.Projects)
