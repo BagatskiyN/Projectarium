@@ -97,50 +97,50 @@ namespace Projectarium.Domain.Concrete
                     await userManager.AddClaimAsync(user, new Claim("AdminId", applicationUser.Id.ToString()));
 
                 }
-                string firstUserEmail = "firstUser@gmail.com";
-                string firstUserPassword = "firstUser1";
-                var firstUser = new ApplicationUser { UserName = firstUserEmail, Email = firstUserEmail, EmailConfirmed = true };
-                var firstUserCreateResult = await userManager.CreateAsync(firstUser, firstUserPassword);
-                if (firstUserCreateResult.Succeeded)
-                {
-                    ApplicationUser firstApplicationUser= await userManager.FindByEmailAsync(firstUserEmail);
-                    //UserProfile firstUserProfile = new UserProfile()
-                    //{
-                    //    Id = firstApplicationUser.Id,
-                    //    ApplicationUser = firstApplicationUser,
-                    //    Name = "FirstUser",
-                    //    AboutUser = "AboutFirstUser"
-                    //};
-                    //_context.UserProfiles.Add(firstUserProfile);
-                    //Project project = new Project()
-                    //{
-                    //    Title = "Project1",
-                    //    AboutProject = "AboutProject1",
-                    //    UserProfile =firstUserProfile
+                //string firstUserEmail = "firstUser@gmail.com";
+                //string firstUserPassword = "firstUser1";
+                //var firstUser = new ApplicationUser { UserName = firstUserEmail, Email = firstUserEmail, EmailConfirmed = true };
+                //var firstUserCreateResult = await userManager.CreateAsync(firstUser, firstUserPassword);
+                //if (firstUserCreateResult.Succeeded)
+                //{
+                //    ApplicationUser firstApplicationUser= await userManager.FindByEmailAsync(firstUserEmail);
+                //UserProfile firstUserProfile = new UserProfile()
+                //{
+                //    Id = firstApplicationUser.Id,
+                //    ApplicationUser = firstApplicationUser,
+                //    Name = "FirstUser",
+                //    AboutUser = "AboutFirstUser"
+                //};
+                //_context.UserProfiles.Add(firstUserProfile);
+                //Project project = new Project()
+                //{
+                //    Title = "Project1",
+                //    AboutProject = "AboutProject1",
+                //    UserProfile =firstUserProfile
 
-                    //};
-                    //await _context.SaveChangesAsync();
+                //};
+                //await _context.SaveChangesAsync();
 
-                    await userManager.AddClaimAsync(user, new Claim("UserId", firstApplicationUser.Id.ToString()));
+                //    await userManager.AddClaimAsync(firstUser, new Claim("UserId", firstApplicationUser.Id.ToString()));
 
-                }
-                string secondUserEmail = "secondUser@gmail.com";
-                string secondUserPassword = "secondUser1";
-                var secondUser = new ApplicationUser { UserName = secondUserEmail, Email = secondUserEmail, EmailConfirmed = true };
-                var secondUserCreateResult = await userManager.CreateAsync(secondUser, secondUserPassword);
-                if (secondUserCreateResult.Succeeded)
-                {
-                    ApplicationUser secondApplicationUser = await userManager.FindByEmailAsync(secondUserEmail);
+                //}
+                //string secondUserEmail = "secondUser@gmail.com";
+                //string secondUserPassword = "secondUser1";
+                //var secondUser = new ApplicationUser { UserName = secondUserEmail, Email = secondUserEmail, EmailConfirmed = true };
+                //var secondUserCreateResult = await userManager.CreateAsync(secondUser, secondUserPassword);
+                //if (secondUserCreateResult.Succeeded)
+                //{
+                //    ApplicationUser secondApplicationUser = await userManager.FindByEmailAsync(secondUserEmail);
 
 
-                    await userManager.AddClaimAsync(user, new Claim("UserId", secondApplicationUser.Id.ToString()));
-
-                }
-
-            
+                //    await userManager.AddClaimAsync(secondUser, new Claim("UserId", secondApplicationUser.Id.ToString()));
 
             }
+
+
+
+        }
         }
 
-    }
+    
 }
