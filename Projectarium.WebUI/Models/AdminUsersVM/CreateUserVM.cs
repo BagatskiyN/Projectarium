@@ -9,6 +9,7 @@ namespace Projectarium.WebUI.Models.AdminUsersVM
     public class CreateUserVM
     {
         public string Email { get; set; }
+        public string Name { get; set; }
         public string AboutUser { get; set; }
         public IFormFile FormFile { get; set; }
       

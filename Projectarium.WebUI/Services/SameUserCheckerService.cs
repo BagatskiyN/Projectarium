@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Projectarium.Domain.Concrete;
 using Projectarium.Domain.Entities;
 using System;
@@ -9,13 +10,18 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Projectarium.WebUI.Services
-{
+{ ///<summary>
+  /// Интерфейс сервиса для сравнения текущего пользователя и передаваемого.
+  ///</summary>
     public interface ISameUserCheckerService
     {
  
         public Task<bool> SameUserCheckerByVacation(ClaimsPrincipal currentUser,int VacancyId);
 
     }
+    ///<summary>
+    /// Класс сервиса для сравнения текущего пользователя и передаваемого. 
+    ///</summary>
     public class SameUserCheckerService: ISameUserCheckerService
     {
         public ApplicationDbContext _context;
@@ -24,6 +30,10 @@ namespace Projectarium.WebUI.Services
 
             _context = context;
         }
+        ///<summary>
+        ///Метод для сравнения текущего пользователя и пользователя который
+        ///создал вакансию на которую текущий пользователь хочет подать заявку. 
+        ///</summary>
         public async Task<bool> SameUserCheckerByVacation(ClaimsPrincipal currentUser, int VacancyId)
         {
          
@@ -45,6 +55,15 @@ namespace Projectarium.WebUI.Services
             }
 
         }
-
+      
     }
+    ///<summary>
+    /// Метод расширения для сервиса SameUserCheckerService
+    ///</summary>
+    public static class SameUserCheckerServiceExtention
+        {
+            public static IServiceCollection SameUserChecker(this IServiceCollection services)
+                => services.AddTransient<ISameUserCheckerService,SameUserCheckerService>();
+        }
+
 }

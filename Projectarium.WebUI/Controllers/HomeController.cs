@@ -20,11 +20,16 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Projectarium.WebUI.Controllers
-{
+{    /// <summary>
+     ///Контроллер для работы с главной страницей. На главную страницу выводятся все проекты пользователей.
+     /// В проекты можно перейти, чтобы ознакомиться с ними подробнее. На странице проекта представлены 
+     ///  доступные вакансии на которые можно подать заявку.
+     ///</summary> 
     [Authorize]
     [Authorize(Policy = "User")]
     public class HomeController : Controller
     {
+
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
@@ -33,34 +38,29 @@ namespace Projectarium.WebUI.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Метод для вывода списка проектов.
+        ///</summary>
+
         public IActionResult Index()
         {
             List<Project> projects = _context.Projects.ToList();
             return View(projects);
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-        //public async Task<IActionResult> ShowProjectPage(int id)
-        //{
-        
-        //    Project project = _context.Projects
-        //        .Include(x => x.Vacancies)
-        //        .ThenInclude(vacancy => vacancy.Skills)
-        //        .Include(x => x.Links)
-        //        .FirstOrDefault(x => x.Id == id);
-
-        //    return View("~/Views/ProjectManager/PreviewProject.cshtml", project);
-        //}
+        /// <summary>
+        ///     Метод CreateRequest используется для передачи в представление частичного представления в котором содержится модальное окно.
+        ///   В модальное окно передается вакансия на которую пользователь хотел подать заявку.
+        ///</summary> 
+        ///  <param name="id">Id вакансии на которую пользователь подает заявку</param>
         public async Task<IActionResult> CreateRequest(int id)
         {
-            ClaimsPrincipal currentUser = this.User;
 
-            UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
+            //Получает из базы данных профиль текущего пользователя
+            UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value));
             Vacancy vacancy = await _context.Vacancies.FirstOrDefaultAsync(x => x.Id == id);
             Project project = await _context.Projects.FirstOrDefaultAsync(x => x.Id == vacancy.ProjectId);
+            //Сравнение Id пользователя который подал заявку на проект и Id создателя проекта. 
+            //В случае если пользователи отличаются метод возвращает частичное представление с модальным окном для ввода данных о заявке.
             if (project.UserProfileId == userProfile.Id)
             {
                 return Ok();
@@ -72,13 +72,18 @@ namespace Projectarium.WebUI.Controllers
 
 
         }
+        /// <summary>
+        ///  Метод принимает заявку и сохраняет ее в БД
+        ///</summary>
+        ///  <param name="id">Объект в котором хранятся Id вакансии и мотивация пользователя который подавал заявку.</param>
         [HttpPost]
-        public async Task<IActionResult> CreateRequest([FromBody]NewRequest newRequest)
+        public async Task<IActionResult> CreateRequest([FromBody] NewRequest newRequest)
         {
-            ClaimsPrincipal currentUser = this.User;
-            UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
+            //Получает из базы данных профиль текущего пользователя
+            UserProfile userProfile = await _context.UserProfiles
+                                            .FirstOrDefaultAsync(m => m.Id == int.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
-            Vacancy vacancy = await _context.Vacancies.FirstOrDefaultAsync(x=>x.Id==newRequest.VacancyId);
+            Vacancy vacancy = await _context.Vacancies.FirstOrDefaultAsync(x => x.Id == newRequest.VacancyId);
 
             Request request = new Request() { Vacancy = vacancy, UserProfile = userProfile, Motivation = newRequest.Motivation };
             await _context.AddAsync(request);

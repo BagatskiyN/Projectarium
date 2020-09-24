@@ -12,6 +12,12 @@ using Projectarium.Domain.Entities;
 
 namespace Projectarium.WebUI.Controllers
 {
+
+    /// <summary>
+    ///Контроллер для работы с запросами пользователей.
+    ///Контроллер позволяет создавать, просматривать и удалять запросы.
+    ///</summary>
+
     [Authorize(Policy = "User")]
     public class RequestsController : Controller
     {
@@ -24,6 +30,11 @@ namespace Projectarium.WebUI.Controllers
             _context = context;
 
         }
+
+        /// <summary>
+        ///Метод выводит список заявок на выбранный проект
+        ///</summary>
+        ///<param name="id">Id выбранного проекта</param>
         [HttpGet("Requests/Index/id")]
         public IActionResult Index(int id)
         {
@@ -36,31 +47,43 @@ namespace Projectarium.WebUI.Controllers
             }
             return View(requests);
         }
+
+        /// <summary>
+        ///Метод выводит данные о заявке
+        ///</summary>
+        ///<param name="id">Id выбранной заявки</param>
         public async Task<IActionResult> Details(int id)
         {
             Request request = await _context.Requests
                 .Include(x => x.Vacancy).ThenInclude(vacancy => vacancy.Project)
-                                      .Include(x => x.UserProfile).ThenInclude(user => user.Skills)
-                                      .Include(x => x.UserProfile).ThenInclude(user => user.Links)
+                                          .Include(x => x.UserProfile).ThenInclude(user => user.Skills)
+                                          .Include(x => x.UserProfile).ThenInclude(user => user.Links)
                 .FirstOrDefaultAsync(x => x.Id == id);
             return View(request);
 
         }
-
+        /// <summary>
+        ///Метод выводит список заявок текущего пользователя
+        ///</summary>
         public async Task<IActionResult> Index()
         {
             ClaimsPrincipal currentUser = this.User;
             UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(m => m.Id == int.Parse(currentUser.FindFirst(ClaimTypes.NameIdentifier).Value));
-            List<Request> requests = _context.Projects.Include(x => x.UserProfile)
-                .Include(x => x.Vacancies)
-                        .SelectMany(x => x.Vacancies
-                                .SelectMany(x => x.Requests))
-                                    .Include(x=>x.Vacancy)
-                                       .Where(x => x.UserProfileId == userProfile.Id)
+            List<Request> requests = _context.Requests.Include(x =>x.Vacancy).Where(x => x.UserProfileId == userProfile.Id)
+                //.Include(x => x.Vacancies)
+                //        .SelectMany(x => x.Vacancies
+                //                .SelectMany(x => x.Requests))
+                //                    .Include(x=>x.Vacancy)
+                //                       .Where(x => x.UserProfileId == userProfile.Id)
                 .ToList();
 
             return View(requests);
         }
+
+        /// <summary>
+        ///Метод удаляет заявку.
+        ///</summary>
+        ///  ///<param name="id">Id выбранной заявки</param>
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -80,8 +103,10 @@ namespace Projectarium.WebUI.Controllers
 
             return View(request);
         }
-
-        // POST: Requests/Delete/5
+        /// <summary>
+        ///Подтверждение удаления заявки.
+        ///</summary>
+        ///  ///<param name="id">Id выбранной заявки</param>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

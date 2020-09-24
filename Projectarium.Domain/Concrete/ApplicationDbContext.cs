@@ -72,74 +72,7 @@ namespace Projectarium.Domain.Concrete
         .WithMany(a => a.Links)
            .HasForeignKey(x => x.UserProfileId)
         .OnDelete(DeleteBehavior.Cascade);
-            //modelBuilder.Entity<Project>()
-            //  .HasOne(a => a.UserProfile)
-            //  .WithMany(a => a.Projects)
-            //   .HasForeignKey(x => x.UserProfileId)
-            //  .OnDelete(DeleteBehavior.Cascade);
-
-            //     //Один-к-одному объеденяющий пользователя и аккаунт идентификации
-            //     modelBuilder
-            //.Entity<ApplicationUser>()
-            //.HasOne(u => u.UserProfile)
-            //.WithOne(p => p.ApplicationUser)
-            //.HasForeignKey<UserProfile>(p => p.Id)
-            //.HasPrincipalKey<ApplicationUser>(c => c.Id);
-
-            //     modelBuilder.Entity<Skill>()
-            //      .HasOne(a => a.Vacancy)
-            //      .WithMany(a => a.Skills)
-            //      .OnDelete(DeleteBehavior.Cascade);
-            //     //     .HasForeignKey(x=>x.VacancyId)
-
-
-            //     //    modelBuilder.Entity<Vacancy>()
-            //     //     .HasOne(a => a.Project)
-            //     //     .WithMany(a => a.Vacancies)
-            //     //        .HasForeignKey(x => x.ProjectId)
-            //     //     .OnDelete(DeleteBehavior.Cascade);
-
-
-            //     //    modelBuilder.Entity<Link>()
-            //     //  .HasOne(a => a.Project)
-            //     //  .WithMany(a => a.Links)
-            //     //     .HasForeignKey(x => x.ProjectId)
-            //     //  .OnDelete(DeleteBehavior.Cascade);
-
-            //     //    modelBuilder.Entity<Link>()
-            //     //.HasOne(a => a.UserProfile)
-            //     //.WithMany(a => a.Links)
-            //     //   .HasForeignKey(x => x.UserProfileId)
-            //     //.OnDelete(DeleteBehavior.Cascade);
-
-            //     modelBuilder.Entity<Project>()
-            //          .HasOne(a => a.UserProfile)
-            //          .WithMany(a => a.Projects)
-            //           .HasForeignKey(x => x.UserProfileId)
-            //          .OnDelete(DeleteBehavior.Cascade);
-
-            //     modelBuilder.Entity<Skill>()
-            //   .HasOne(a => a.UserProfile)
-            //   .WithMany(a => a.Skills)
-            //   // .HasForeignKey(x => x.UserProfileId)
-            //   //.OnDelete(DeleteBehavior.Cascade);
-
-            //   //  modelBuilder.Entity<Request>()
-            //   //  .HasOne(a => a.UserProfile)
-            //   //  .WithMany(a => a.Requests)
-            //   //   .HasForeignKey(x => x.UserProfileId)
-            //     .OnDelete(DeleteBehavior.Cascade);
-
-            //     //modelBuilder.Entity<Request>()
-            //     //.HasOne(a => a.Vacancy)
-            //     //.WithMany(a => a.Requests)
-            //     // .HasForeignKey(x => x.VacancyId)
-            //     //.OnDelete(DeleteBehavior.Cascade);
-            //     base.OnModelCreating(modelBuilder);
-
-
-
-
+        
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -148,7 +81,9 @@ namespace Projectarium.Domain.Concrete
         }
         public class AdminInitializer
         {
-            public static async Task InitializeAsync(UserManager<ApplicationUser> userManager)
+         
+       
+            public static async Task InitializeAsync(UserManager<ApplicationUser> userManager/*,ApplicationDbContext _context*/)
             {
                 string adminEmail = "admin@gmail.com";
                 string password = "Admin1@";
@@ -162,6 +97,48 @@ namespace Projectarium.Domain.Concrete
                     await userManager.AddClaimAsync(user, new Claim("AdminId", applicationUser.Id.ToString()));
 
                 }
+                string firstUserEmail = "firstUser@gmail.com";
+                string firstUserPassword = "firstUser1";
+                var firstUser = new ApplicationUser { UserName = firstUserEmail, Email = firstUserEmail, EmailConfirmed = true };
+                var firstUserCreateResult = await userManager.CreateAsync(firstUser, firstUserPassword);
+                if (firstUserCreateResult.Succeeded)
+                {
+                    ApplicationUser firstApplicationUser= await userManager.FindByEmailAsync(firstUserEmail);
+                    //UserProfile firstUserProfile = new UserProfile()
+                    //{
+                    //    Id = firstApplicationUser.Id,
+                    //    ApplicationUser = firstApplicationUser,
+                    //    Name = "FirstUser",
+                    //    AboutUser = "AboutFirstUser"
+                    //};
+                    //_context.UserProfiles.Add(firstUserProfile);
+                    //Project project = new Project()
+                    //{
+                    //    Title = "Project1",
+                    //    AboutProject = "AboutProject1",
+                    //    UserProfile =firstUserProfile
+
+                    //};
+                    //await _context.SaveChangesAsync();
+
+                    await userManager.AddClaimAsync(user, new Claim("UserId", firstApplicationUser.Id.ToString()));
+
+                }
+                string secondUserEmail = "secondUser@gmail.com";
+                string secondUserPassword = "secondUser1";
+                var secondUser = new ApplicationUser { UserName = secondUserEmail, Email = secondUserEmail, EmailConfirmed = true };
+                var secondUserCreateResult = await userManager.CreateAsync(secondUser, secondUserPassword);
+                if (secondUserCreateResult.Succeeded)
+                {
+                    ApplicationUser secondApplicationUser = await userManager.FindByEmailAsync(secondUserEmail);
+
+
+                    await userManager.AddClaimAsync(user, new Claim("UserId", secondApplicationUser.Id.ToString()));
+
+                }
+
+            
+
             }
         }
 

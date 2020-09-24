@@ -18,15 +18,17 @@ using Projectarium.WebUI.Models.AdminUsersVM;
 
 namespace Projectarium.WebUI.Controllers
 {
+    /// <summary>
+    ///Контроллер для работы со списком пользользователей. 
+    ///Контроллер позволяет просматривать некоторые данные о пользователях, создавать,редактировать и удалять пользователей.
+    ///</summary>
     [Authorize(Policy = "Admin")]
     public class AdminUsersController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        //public static List<Skill> Skills { get; set; } = new List<Skill>();
-   
-        //public static List<NewSkill> NewSkills { get; set; } = new List<NewSkill>();
+
         public AdminUsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
@@ -34,14 +36,17 @@ namespace Projectarium.WebUI.Controllers
         
         }
 
-        // GET: AdminUsers
+        /// <summary>
+        ///Метод передает в представление список пользователей. 
+        ///</summary>
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.UserProfiles.Include(u => u.ApplicationUser);
             return View(await applicationDbContext.ToListAsync());
         }
-
-        // GET: AdminUsers/Details/5
+        /// <summary>
+       ///Метод передает в представление данные о пользователе. 
+        ///</summary>
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -60,16 +65,21 @@ namespace Projectarium.WebUI.Controllers
             return View(userProfile);
         }
 
-        // GET: AdminUsers/Create
+        /// <summary>
+        ///Метод вызывает страницу создания пользователя. 
+        ///</summary>
         public IActionResult Create()
         {
           
             return View();
         }
 
-        // POST: AdminUsers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        /// <summary>
+        ///Метод сохраняет нового пользователя. 
+        ///</summary>
+        ///<param name="createUserVM">Объект в котором хранятся данные нового пользователя.</param>
+        ///<param name="imageInp">Файл - картинка пользовательского профиля .</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateUserVM createUserVM, IFormFile imageInp)
@@ -87,6 +97,7 @@ namespace Projectarium.WebUI.Controllers
                     {   
                         Id=applicationUser.Id,
                         ApplicationUser=applicationUser,
+                        Name=createUserVM.Name,
                         AboutUser = createUserVM.AboutUser
                     };
                     if(createUserVM.FormFile!=null)
@@ -116,7 +127,10 @@ namespace Projectarium.WebUI.Controllers
             return RedirectToAction("Index","AdminUsers");
         }
 
-        // GET: AdminUsers/Edit/5
+        /// <summary>
+        ///Метод передает в представление данные пользователя для редактирования. 
+        ///</summary>
+        ///<param name="id">Id пользователя для редактирования.</param>
         public async Task<IActionResult> Edit(int? id)
         {
          
@@ -125,24 +139,19 @@ namespace Projectarium.WebUI.Controllers
                 return NotFound();
             }
             var applicationUser= await _userManager.FindByIdAsync(id.ToString());
-            var userProfile = await _context.UserProfiles.FindAsync(id);
+            var userProfile = await _context.UserProfiles.Include(x=>x.Projects).FirstOrDefaultAsync(x=>x.Id==id);
             EditUserVM editUserVM = new EditUserVM()
             {
-                Id=userProfile.Id,
+                Id = userProfile.Id,
+                Name=userProfile.Name,
                 Email = applicationUser.Email,
                 AboutUser = userProfile.AboutUser,
-               
+                Projects = userProfile.Projects,
                 Links = userProfile.Links,
-                //Projects = userProfile.Projects,
                 ImageData=userProfile.ImageData,
                 ImageType=userProfile.ImageMimeType
             };
-            //Skills = _context.UserProfiles
-            //    .Include(u => u.Skills)
-            //    .FirstOrDefault(x => x.Id ==id)
-            //    .Skills
-            //    .ToList();
-            //editUserVM.Skills = Skills;
+           
             if (applicationUser== null)
             {
                 return NotFound();
@@ -154,11 +163,15 @@ namespace Projectarium.WebUI.Controllers
             return View(editUserVM);
         }
 
-        // POST: AdminUsers/Edit/5
-     
+
+        /// <summary>
+        ///Метод сохраняет данные измененного пользователя. 
+        ///</summary>
+        ///<param name="id">Id пользователя для редактирования.</param>
+        ///<param name="editUserVM">Объект хранящий измененные данные пользователя.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AboutUser")] EditUserVM editUserVM)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,AboutUser")] EditUserVM editUserVM)
         {
             if (id !=editUserVM.Id)
             {
@@ -172,35 +185,7 @@ namespace Projectarium.WebUI.Controllers
 
                     UserProfile userProfile = await _context.UserProfiles.FindAsync(id);
                     userProfile.AboutUser = editUserVM.AboutUser;
-                   //List<Skill>  FormerSkillsList =_context.UserProfiles
-                   //     .Include(u => u.Skills)
-                   //     .FirstOrDefault(x => x.Id == id)
-                   //     .Skills
-                   //    .ToList();
-                   // List<Skill> DeletedSkills = FormerSkillsList.Except(Skills).ToList();
-
-                    //foreach (var skill in DeletedSkills)
-                    //{
-                    //   _context.Skills.Remove(skill);
-                    //}
-                   //foreach(var item in NewSkills)
-                   // {
-                   //     Skill skill = new Skill()
-                   //     {
-                   //         Title = item.text,
-                   //       UserProfile=userProfile
-                   //     };
-                   //     await _context.Skills.AddAsync(skill);
-                   //     await _context.SaveChangesAsync();
-                   
-                   // }
-                
-                    //foreach (var item in NewSkills)
-                    //{
-                     
-                    //     //_context.SkillUsers.
-
-                    //}
+                    userProfile.Name = editUserVM.Name;
                     _context.UserProfiles.Update(userProfile);
                     await _context.SaveChangesAsync();
                 }
@@ -221,23 +206,10 @@ namespace Projectarium.WebUI.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpPost]
-        //public ActionResult DeleteSkill(int? id)
-        //{
-        //    if(id==null)
-        //    {
-        //        return NotFound();
-        //    }
-          
-        //   if(Skills.Select(x=>x.Id==id)!=null)
-        //    {
-        //        Skill skill = Skills.Where(x => x.Id == id).FirstOrDefault();
-        //        Skills.Remove(skill);
-        //    }
-        //    return PartialView("~/Shared/AdminUsersPartialViews/SkillsList.cshtml", Skills);
-        //}
-
-        // GET: AdminUsers/Delete/5
+        /// <summary>
+        ///Метод выводит представление для подтверждения удаления пользователя. 
+        ///</summary>
+        ///<param name="id">Id пользователя для удаления.</param>
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -257,7 +229,10 @@ namespace Projectarium.WebUI.Controllers
             return View(userProfile);
         }
 
-        // POST: AdminUsers/Delete/5
+        /// <summary>
+        ///Метод  удаляет пользователя. 
+        ///</summary>
+        ///<param name="id">Id пользователя для удаления.</param>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -275,21 +250,10 @@ namespace Projectarium.WebUI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //[HttpPost]
-        //public IActionResult DeleteSkill([FromBody]string text)
-        //{
-        //    Skill skill = Skills.Where(x => x.Title == text).FirstOrDefault();
-        //    Skills.Remove(skill);
-            
-        //    NewSkill newSkill = NewSkills.Where(x => x.text == text).FirstOrDefault();
-    
-        //    NewSkills.Remove(newSkill);
-        //    return PartialView("~/Views/Shared/AdminUsersPartialViews/SkillsList.cshtml", Skills);
-
-        //}
-   
-
-
+        /// <summary>
+        ///Метод  добавления умения пользователя. 
+        ///</summary>
+        ///<param name="newSkill">Объект хранящий Id пользователя и название умения .</param>
         [HttpPost]
         public IActionResult AddSkill([FromBody] NewSkill newSkill)
         {

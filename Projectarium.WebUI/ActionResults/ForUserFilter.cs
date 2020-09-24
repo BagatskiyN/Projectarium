@@ -11,7 +11,7 @@ namespace Projectarium.WebUI.ActionResults
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (!context.HttpContext.User.IsInRole("admin"))
+            if (!context.HttpContext.User.IsInRole("User"))
             {
                 context.Result = new ForbidResult();
             }

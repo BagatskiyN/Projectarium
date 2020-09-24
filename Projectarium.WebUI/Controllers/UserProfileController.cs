@@ -21,6 +21,11 @@ using Microsoft.AspNetCore.Http;
 
 namespace Projectarium.WebUI.Controllers
 {
+    /// <summary>
+    ///Контроллер для работы с профилем пользователя. 
+    ///Контроллер позволяет просматривать и менять профиль.
+    ///</summary>
+
     [Authorize(Policy = "User")]
     public class UserProfileController : Controller
     {
@@ -35,6 +40,9 @@ namespace Projectarium.WebUI.Controllers
             _linkMasker = linkMasker;
 
         }
+        /// <summary>
+        ///Метод выводит профиль текущего пользователя. 
+        ///</summary>
         public async Task<IActionResult> Index()
         {
             ClaimsPrincipal currentUser = this.User;
@@ -46,7 +54,9 @@ namespace Projectarium.WebUI.Controllers
 
             return View(userProfile);
         }
-
+        /// <summary>
+        ///Метод выводит профиль выбранного пользователя. 
+        ///</summary>
         [HttpGet("UserProfile/Index/id")]
         public async Task<IActionResult> Index(int id)
         {
@@ -57,6 +67,9 @@ namespace Projectarium.WebUI.Controllers
 
             return View(userProfile);
         }
+        /// <summary>
+        ///Метод выводит профиль пользователя для редактирования. 
+        ///</summary>
         public async Task<IActionResult> Edit()
         {
             ClaimsPrincipal currentUser = this.User;
@@ -68,6 +81,13 @@ namespace Projectarium.WebUI.Controllers
 
             return View(userProfile);
         }
+
+        /// <summary>
+        ///Метод сохраняет изменения профиля пользователя. 
+        ///</summary>
+        ///<param name="UserName">Имя пользователя</param>
+        ///<param name="AboutUser">Описание пользователя</param>
+        ///<param name="Image">Файл фото пользователя</param>
         [HttpPost]
         public async Task Edit(string UserName, string AboutUser, IFormFile Image)
         {
@@ -96,6 +116,10 @@ namespace Projectarium.WebUI.Controllers
             await _context.SaveChangesAsync();
 
         }
+        /// <summary>
+        ///Метод сохраняет ссылку. 
+        ///</summary>
+        ///  <param name="link">Текст ссылки</param>
         [HttpPost]
         public async Task<IActionResult> AddUserLink([FromBody] string link)
         {
@@ -121,6 +145,12 @@ namespace Projectarium.WebUI.Controllers
             }
 
         }
+
+
+        /// <summary>
+        ///Метод сохраняет новый навык. 
+        ///</summary>
+        ///  <param name="Title">Название навыка пользователя</param>
         [HttpPost]
         public async Task<IActionResult> AddUserSkill([FromBody] string Title)
         {
@@ -144,7 +174,10 @@ namespace Projectarium.WebUI.Controllers
 
 
         }
-
+        /// <summary>
+        ///Метод сравнивает Id текущего пользователя с Id запрошеного пользователя.
+        ///</summary>
+        ///  <param name="Id">Id запрошеного пользователя</param>
         [HttpPost]
         public async Task<IActionResult> CheckUser([FromBody] int? Id)
         {
@@ -168,7 +201,10 @@ namespace Projectarium.WebUI.Controllers
 
 
 
-
+        /// <summary>
+        ///Метод возвращает фото пользовательского профиля
+        ///</summary>
+        ///  <param name="id">Id запрошеного пользователя</param>
         public async Task<FileContentResult> GetUserProfileImage(int id)
         {
             UserProfile userProfile = await _context.UserProfiles.FirstOrDefaultAsync(x => x.Id == id);

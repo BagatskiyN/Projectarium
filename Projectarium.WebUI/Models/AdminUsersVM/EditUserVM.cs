@@ -11,6 +11,7 @@ namespace Projectarium.WebUI.Models.AdminUsersVM
     {
         public int Id { get; set; }
         public string Email { get; set; }
+        public string Name { get; set; }
         public string AboutUser { get; set; }
         public List<Skill> Skills { get; set; }
         public List<Link> Links { get; set; }
